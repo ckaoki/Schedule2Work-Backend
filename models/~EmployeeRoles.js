@@ -4,12 +4,12 @@
 // this join table is created after the tables it references are created to avoid errors
 
 module.exports = function(sequelize, DataTypes){
-  var EmployeeRole = sequelize.define("Employee_roles", {
+  var EmployeeRoles = sequelize.define("Employee_roles", {
     employee_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Employee',
+        model: 'Employees',
         key: 'id'
       }
     },
@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Role',
+        model: 'Roles',
         key: 'id'
       }
     },
@@ -26,5 +26,5 @@ module.exports = function(sequelize, DataTypes){
       defaultValue: 'inexperienced'
     }
   });
-  return EmployeeRole;
+  return EmployeeRoles;
 };
