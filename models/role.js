@@ -7,15 +7,17 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true
       },
       role: {
-        type: DataTypes.ENUM('grill','fry','counter','trainer','supervisor','manager','owner'),
+        // type: DataTypes.ENUM('grill','fry','counter','trainer','supervisor','manager','owner')
+        type: DataTypes.STRING,
+        unique: true
       }
     });
   
     Role.associate = function(models) {
       Role.belongsToMany(models.Employee, {
-        through: "Employee_role",
-        // as: 'employee', TODO: delete if not needed
-        foreignKey: 'employee_id',
+        through: "employee_roles",
+        as: 'employees',
+        foreignKey: 'role_id',
         onDelete: "cascade"
       });
     };  

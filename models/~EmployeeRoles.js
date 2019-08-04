@@ -4,7 +4,7 @@
 // this join table is created after the tables it references are created to avoid errors
 
 module.exports = function(sequelize, DataTypes){
-  var EmployeeRole = sequelize.define("Employee_role", {
+  var EmployeeRole = sequelize.define("Employee_roles", {
     employee_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes){
       }
     },
     skill_level: {
-      type: DataTypes.ENUM('inexperienced','novice','competant'),
+      type: DataTypes.ENUM('inexperienced','novice','competent'),
       defaultValue: 'inexperienced'
     }
   });
