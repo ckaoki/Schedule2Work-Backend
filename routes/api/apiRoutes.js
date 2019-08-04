@@ -10,18 +10,18 @@ router.route("/employee/:role").get( function (req, res) {console.log("Employee"
 
   db.Employee.findAll({
     include: [{
-      model: db.Employee,
-      as: 'employee',
-      attributes: ['id', 'first_name'],
+      model: db.Role,
+      as: 'roles',
+      attributes: ['id', 'role'],
       through: {
-        model: db.employeeRoles
+        model: db.EmployeeRoles
       },
       where: {
         role: role
       }
     }]
-  }).then(function (employee) {
-        res.json(employee);
+  }).then(function (employees) {
+        res.json(employees);
       });
 });
 
@@ -30,11 +30,11 @@ router.route("/role/:firstName").get( function (req, res) {console.log("role");
 var firstName = req.params.firstName.trim();
   db.Role.findAll({
     include: [{
-      model: db.Role,
-      // as: 'role',
-      attributes: ['id', 'role'],
+      model: db.Employee,
+      as: 'employees',
+      attributes: ['id', 'first_name'],
       through: {
-        model: db.employeeRoles
+        model: db.EmployeeRoles
       },
       where: {
         first_name: firstName
