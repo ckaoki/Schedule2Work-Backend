@@ -1,5 +1,5 @@
-// employeeRole model
-// Used as join table between employee and role
+// schedule model
+// Used as join table between employee, role, and calendar
 // The '~' in filename "~EmployeeRoles" used so this file is read last so that
 // this join table is created after the tables it references are created to avoid errors
 

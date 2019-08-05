@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     begin_time:{
       type: DataTypes.INTEGER,
-      allowNull:fale
+      allowNull:false
     },
     end_time:{
       type: DataTypes.INTEGER,

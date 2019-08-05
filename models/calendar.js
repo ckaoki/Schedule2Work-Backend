@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes){
       primaryKey: true
     },
     full_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
       unique: true
     },
