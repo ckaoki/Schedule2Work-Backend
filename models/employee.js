@@ -8,19 +8,19 @@ module.exports = function(sequelize, DataTypes) {
       },
       first_name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       }, 
       last_name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       birthdate: {
         type: DataTypes.DATEONLY,
-        allowNull: false
+        allowNull: true
       },
       startdate: {
         type: DataTypes.DATEONLY,
-        allowNull: false
+        allowNull: true
       },
       email: {
         type: DataTypes.STRING,
@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
       },
       phone: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
       },
       minimum_hours: {
         type: DataTypes.INTEGER,
@@ -36,7 +36,7 @@ module.exports = function(sequelize, DataTypes) {
       },
       maximum_hours: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
       },
       food_certification_expiration_date: {
         type: DataTypes.DATEONLY
