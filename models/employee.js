@@ -1,59 +1,80 @@
 // Model for employee
 module.exports = function(sequelize, DataTypes) {
     var Employee = sequelize.define("Employee", {
-      id: {
+      EmployeeID: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
-      first_name: {
+      FirstName: {
         type: DataTypes.STRING,
         allowNull: false
       }, 
-      last_name: {
+      LastName: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      birthdate: {
+      DOB: {
         type: DataTypes.DATEONLY,
         allowNull: false
       },
-      startdate: {
+      Startdate: {
         type: DataTypes.DATEONLY,
         allowNull: false
       },
-      email: {
+      Email: {
         type: DataTypes.STRING,
         defaultValue: ""
       },
-      phone: {
-        type: DataTypes.INTEGER,
+      Phone: {
+        type: DataTypes.STRING,
         allowNull: false
       },
-      minimum_hours: {
+      MinHours: {
         type: DataTypes.INTEGER,
         defaultValue: 0
       },
-      maximum_hours: {
+      MaxHours: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      food_certification_expiration_date: {
+      Wage: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+      },
+      CertExpDate: {
         type: DataTypes.DATEONLY
+      },
+      CertType: {
+        type: DataTypes.TEXT
+      },
+      Password: {
+        type: DataTypes.TEXT,
+        allowNull: false
       }
     });
+
+    Employee.associate = function(models) {  
+    // one-to-many relationships
+      Employee.belongsTo(models.Business);
   
-    Employee.associate = function(models) {
+    // many-to-many relationships 
       Employee.belongsToMany(models.Role, {
         through: 'employee_roles',
-        as: 'roles',
-        foreignKey: 'employee_id',
+        as: 'role',
+        foreignKey: 'employeeID',
         onDelete: 'cascade'
       });
-    };  
+      Employee.belongsToMany(models.Employee_Group, {
+        through: 'employee_groups',
+        as: 'employee_group',
+        foreignKey: 'employeeID',
+        onDelete: 'cascade'
+      });
+    }; 
+ 
   
     return Employee;
   };
-  
   
   

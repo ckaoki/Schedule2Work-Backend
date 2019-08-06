@@ -1,21 +1,21 @@
-// employeeRoles model
-// Used as join table between employee and role
+// shiftRoles model
+// Used as join table between shift and role
 // The '~' in filename "~EmployeeRoles" used so this file is read last so that
 // this join table is created after the tables it references are created to avoid errors
 
 module.exports = function(sequelize, DataTypes){
-  var EmployeeRoles = sequelize.define("Employee_Role", {
-    EmployeeRoleID: {
+  var ShiftRoles = sequelize.define("Shift_Role", {
+    ShiftRoleID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
-    },
-    EmployeeID: {
+    },    
+    ShiftID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Employees',
-        key: 'employeeID'
+        model: 'shifts',
+        key: 'shiftID'
       }
     },
     RoleID: {
@@ -25,11 +25,9 @@ module.exports = function(sequelize, DataTypes){
         model: 'Roles',
         key: 'roleID'
       }
-    },
-    ProficiencyLevel: {
-      type: DataTypes.ENUM('inexperienced','novice','competent'),
-      defaultValue: 'inexperienced'
     }
   });
-  return EmployeeRoles;
+
+  
+  return ShiftRoles;
 };

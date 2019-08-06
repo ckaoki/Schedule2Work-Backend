@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes){
-  var Date = sequelize.define("date",{
+  var Date = sequelize.define("Date",{
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
