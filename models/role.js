@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       role: {
         // type: DataTypes.ENUM('grill','fry','counter','trainer','supervisor','manager','owner')
         type: DataTypes.STRING,
-        unique: true
+        unique: false
       }
     });
   
