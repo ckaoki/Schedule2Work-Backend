@@ -1,6 +1,7 @@
 var faker = require('faker');
 const db = require('../../models')
-
+var N = SELECT COUNT(*) FROM 'Employees';
+console.log(N);
 
 for (let i = 0; i < 30; i++) {
 db.Employee.create({

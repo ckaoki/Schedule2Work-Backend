@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         defaultValue: ""
       },
       phone: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: true
       },
       minimum_hours: {
@@ -40,7 +40,45 @@ module.exports = function(sequelize, DataTypes) {
       },
       food_certification_expiration_date: {
         type: DataTypes.DATEONLY
-      }
+      },
+      //the following fields are added to the table for the purpose of generating data with faker
+      street: {
+        type: DataTypes.STRING,
+        defaultValue: ""
+      },
+      city: {
+        type: DataTypes.STRING,
+        defaultValue: ""
+      },
+      state: {
+        type: DataTypes.STRING,
+        defaultValue: ""
+      },
+      Zipcode: {
+        type: DataTypes.STRING,
+        defaultValue: ""
+      },
+      wage: {
+        type: DataTypes.FLOAT,
+        allowNull: true
+      },
+      BusinessName: {
+        type: DataTypes.STRING,
+        defaultValue: ""
+      },
+      PayPeriod: {
+        type: DataTypes.ENUM('weekly', 'biweekly', 'semi-monthly','monthly'),
+        allowNull: false
+      },
+     // Only inexperenced skll set is getting created by Faker
+      Skill_level: {
+        type: DataTypes.ENUM('inexperienced','novice','competent'),
+        // defaultValue: "inexperienced"
+        allowNull: false
+      },
+      
+      
+
     });
   
     Employee.associate = function(models) {
