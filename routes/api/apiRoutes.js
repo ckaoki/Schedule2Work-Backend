@@ -1,4 +1,5 @@
 var db = require("../../models");
+// var Sequelize = require("sequelize");
 
 // Import node module for routing
 const router = require("express").Router();
@@ -7,37 +8,38 @@ const router = require("express").Router();
 router.route("/employee/:role").get( function (req, res) {console.log("Employee");
   // Change string of ingredients to array
   var role = req.params.role.trim();
+  console.log(role);
 
-  db.Employee.findAll({
+  db.employee.findAll({
     include: [{
-      model: db.Role,
-      as: 'roles',
-      attributes: ['id', 'role'],
+      model: db.role,
+      as: 'role',
+      attributes: ['roleid', 'RoleName'],
       through: {
-        model: db.EmployeeRoles
+        model: db.employeeroles
       },
       where: {
-        role: role
+        RoleName: role
       }
     }]
-  }).then(function (employees) {
-        res.json(employees);
+  }).then(function (foundEmp) {
+        res.json(foundEmp);
       });
 });
 
 // Search for roles by employee
 router.route("/role/:firstName").get( function (req, res) {console.log("role");
 var firstName = req.params.firstName.trim();
-  db.Role.findAll({
+  db.role.findAll({
     include: [{
-      model: db.Employee,
-      as: 'employees',
-      attributes: ['id', 'first_name'],
+      model: db.employee,
+      as: 'employee',
+      attributes: ['EmployeeID', 'FirstName'],
       through: {
-        model: db.EmployeeRoles
+        model: db.employeeroles
       },
       where: {
-        first_name: firstName
+        FirstName: firstName
       }
     }]
   }).then(function (roles) {

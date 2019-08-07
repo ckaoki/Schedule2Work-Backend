@@ -1,6 +1,6 @@
 // Model for role
 module.exports = function(sequelize, DataTypes) {
-    var Role = sequelize.define("Role", {
+    var Role = sequelize.define("role", {
       RoleID: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -13,14 +13,14 @@ module.exports = function(sequelize, DataTypes) {
     });
   
     Role.associate = function(models) {
-      Role.belongsToMany(models.Employee, {
+      Role.belongsToMany(models.employee, {
         through: 'employee_roles',
-        as: 'Employee',
+        as: 'employee',
         foreignKey: 'RoleID',
         onDelete: 'cascade'
       });
 
-      Role.belongsTo(models.Business);
+      Role.belongsTo(models.business);
     };
     return Role;
   };

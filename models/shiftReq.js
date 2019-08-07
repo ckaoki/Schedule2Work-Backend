@@ -1,6 +1,6 @@
 // Model for shiftReq
 module.exports = function(sequelize, DataTypes) {
-  var ShiftReq = sequelize.define("Shift_Req", {
+  var ShiftReq = sequelize.define("shift_req", {
     // BusinessID: {
     //   type: DataTypes.INTEGER,
     //   autoIncrement: true,
@@ -22,8 +22,8 @@ module.exports = function(sequelize, DataTypes) {
 
   
   ShiftReq.associate = function(models) {  
-    ShiftReq.belongsTo(models.Business);
-    ShiftReq.hasMany(models.Schedule);
+    ShiftReq.belongsTo(models.business);
+    ShiftReq.hasMany(models.schedule);
     }; 
 
   return ShiftReq;

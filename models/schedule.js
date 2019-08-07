@@ -1,6 +1,6 @@
 // Model for Schedule
 module.exports = function(sequelize, DataTypes) {
-  var Schedule = sequelize.define("Schedule", {
+  var Schedule = sequelize.define("schedule", {
     ScheduleID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -17,8 +17,8 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Schedule.associate = function(models){
-    Schedule.belongsTo(models.Business);
-    Schedule.belongsTo(models.Schedule_Req);
+    Schedule.belongsTo(models.business);
+    Schedule.belongsTo(models.schedule_req);
   }
 
   return Schedule;
