@@ -1,6 +1,6 @@
 // Model for business
 module.exports = function(sequelize, DataTypes) {
-  var Business = sequelize.define("Business", {
+  var Business = sequelize.define("business", {
     BusinessID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
