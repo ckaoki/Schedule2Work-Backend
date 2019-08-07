@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
       foreignKey: 'ShiftRoleID',
       onDelete: 'cascade'
     });
-  }  
+  }   
 
   return Shift;
 };
