@@ -14,8 +14,8 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'shifts',
-        key: 'shiftID'
+        model: 'Shifts',
+        key: 'ShiftID'
       }
     },
     RoleID: {
@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes){
       allowNull: false,
       references: {
         model: 'Roles',
-        key: 'roleID'
+        key: 'RoleID'
       }
     }
   });
