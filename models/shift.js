@@ -1,6 +1,6 @@
 // Model for shift
 module.exports = function(sequelize, DataTypes) {
-  var Shift = sequelize.define("Shift", {
+  var Shift = sequelize.define("shift", {
     ShiftID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -24,11 +24,11 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Shift.associate = function(models) { 
-    Shift.belongsTo(models.Business);
-    Shift.belongsTo(models.Employee);
-    Shift.hasOne(models.Schedule);
+    Shift.belongsTo(models.business);
+    Shift.belongsTo(models.employee);
+    Shift.hasOne(models.schedule);
       // many-to-many relationships 
-    Shift.belongsToMany(models.Role, {
+    Shift.belongsToMany(models.role, {
       through: 'shift_roles',
       as: 'Role',
       foreignKey: 'ShiftRoleID',

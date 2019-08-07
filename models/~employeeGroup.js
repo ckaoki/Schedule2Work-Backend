@@ -1,6 +1,6 @@
 // Model for employee group join
 module.exports = function(sequelize, DataTypes) {
-  var EmployeeGroup = sequelize.define("Employee_Group", {
+  var EmployeeGroup = sequelize.define("employee_group", {
     GroupID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
   });
   
   EmployeeGroup.associate = function(models) {
-    EmployeeGroup.belongsTo(models.Business);
+    EmployeeGroup.belongsTo(models.business);
   };
   
   return EmployeeGroup;

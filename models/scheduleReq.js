@@ -1,6 +1,6 @@
 // Model for shift
 module.exports = function(sequelize, DataTypes) {
-  var ScheduleReq = sequelize.define("Schedule_Req", {
+  var ScheduleReq = sequelize.define("schedule_req", {
     ScheduleReqID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -16,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
   });
   
   ScheduleReq.associate = function(models) {
-    ScheduleReq.belongsTo(models.Business);
+    ScheduleReq.belongsTo(models.business);
   }
   return ScheduleReq;
 };

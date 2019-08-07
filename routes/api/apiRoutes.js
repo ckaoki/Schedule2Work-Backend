@@ -10,13 +10,13 @@ router.route("/employee/:role").get( function (req, res) {console.log("Employee"
   var role = req.params.role.trim();
   console.log(role);
 
-  db.Employee.findAll({
+  db.employee.findAll({
     include: [{
-      model: db.Role,
+      model: db.role,
       as: 'role',
       attributes: ['roleid', 'RoleName'],
       through: {
-        model: db.EmployeeRoles
+        model: db.employeeroles
       },
       where: {
         RoleName: role
@@ -30,13 +30,13 @@ router.route("/employee/:role").get( function (req, res) {console.log("Employee"
 // Search for roles by employee
 router.route("/role/:firstName").get( function (req, res) {console.log("role");
 var firstName = req.params.firstName.trim();
-  db.Role.findAll({
+  db.role.findAll({
     include: [{
-      model: db.Employee,
+      model: db.employee,
       as: 'employee',
       attributes: ['EmployeeID', 'FirstName'],
       through: {
-        model: db.EmployeeRoles
+        model: db.employeeroles
       },
       where: {
         FirstName: firstName

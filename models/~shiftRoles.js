@@ -4,7 +4,7 @@
 // this join table is created after the tables it references are created to avoid errors
 
 module.exports = function(sequelize, DataTypes){
-  var ShiftRoles = sequelize.define("Shift_Role", {
+  var ShiftRoles = sequelize.define("shift_role", {
     ShiftRoleID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Shifts',
+        model: 'shifts',
         key: 'ShiftID'
       }
     },
@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes){
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Roles',
+        model: 'roles',
         key: 'RoleID'
       }
     }

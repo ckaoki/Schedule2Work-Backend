@@ -1,6 +1,6 @@
 // Model for employee
 module.exports = function(sequelize, DataTypes) {
-    var Employee = sequelize.define("Employee", {
+    var Employee = sequelize.define("employee", {
       EmployeeID: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -56,16 +56,16 @@ module.exports = function(sequelize, DataTypes) {
 
     Employee.associate = function(models) {  
     // one-to-many relationships
-      Employee.belongsTo(models.Business);
+      Employee.belongsTo(models.business);
   
     // many-to-many relationships  
-      Employee.belongsToMany(models.Role, {
+      Employee.belongsToMany(models.role, {
         through: 'employee_roles',
         as: 'role',
         foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
-      Employee.belongsToMany(models.Employee_Group, {
+      Employee.belongsToMany(models.employee_group, {
         through: 'employee_groups',
         as: 'group',
         foreignKey: 'EmployeeID',

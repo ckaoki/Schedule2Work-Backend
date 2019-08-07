@@ -1,6 +1,6 @@
 // Model for role
 module.exports = function(sequelize, DataTypes) {
-  var Address = sequelize.define("Address", {
+  var Address = sequelize.define("address", {
     AddressID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -25,8 +25,8 @@ module.exports = function(sequelize, DataTypes) {
   });
   
   Address.associate = function(models){
-    Address.belongsTo(models.Business);
-    Address.belongsTo(models.Employee);
+    Address.belongsTo(models.business);
+    Address.belongsTo(models.employee);
   }  
 
   return Address;
