@@ -30,8 +30,15 @@ const router = require("express").Router();
 
 router.route("/employee/:id").get( function (req, res) {
   var employee = {
-    firstName: 'Luke',
-    lastName: 'Skywalker'
+    FirstName: 'Jon',
+    LastName: 'Doe',
+    Address: '2445 140th Ave NE, Bellevue, WA 98005',
+    DOB: '1901-01-02',
+    StartDate: '2019-03-04',
+    Email: 'abc@gmail.com',
+    Phone: '206-555-5555',
+    CertType: 'food',
+    CertExpDate: '2020-06-07'
   }
   res.json(employee);
 });

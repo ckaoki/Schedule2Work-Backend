@@ -5,10 +5,12 @@
 // *** Dependencies
 // =============================================================
 var express = require("express");
+var cors = require("cors");
 
 // Sets up the Express App
 // =============================================================
 var app = express();
+app.use(cors());
 var PORT = process.env.PORT || 8080;
 
 // Requiring our models for syncing
