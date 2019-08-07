@@ -5,6 +5,15 @@ var faker = require('faker');
 const db = require('../../models')
 
 
+for (let i = 0; i < 30; i++) {
+  db.business.create({
+    BusinessName: faker.company.companyName(),
+    PayPeriod: faker.random.arrayElement(['weekly', 'biweekly', 'semi-monthly', 'monthly']),
+    PayrollSystem: faker.random.arrayElement(["Quickbook", "ADP","Patriot Software","Gusto", "Deluxe", "Square", "PAYCHEX", "Paycor", "zenefits", "Justworks"]),     
+  })
+  
+  
+};
 
 for (let i = 0; i < 30; i++) {
 db.employee.create({
@@ -39,25 +48,8 @@ for (let i = 0; i < 30; i++) {
 
 
 
-for (let i = 0; i < 30; i++) {
-  db.business.create({
-    BusinessName: faker.company.companyName(),
-    PayPeriod: faker.random.arrayElement(['weekly', 'biweekly', 'semi-monthly', 'monthly']),
-    PayrollSystem: faker.random.arrayElement(["Quickbook", "ADP","Patriot Software","Gusto", "Deluxe", "Square", "PAYCHEX", "Paycor", "zenefits", "Justworks"]),     
-  })
-  
-  
-};
 
-//This isn't working 
-// for (let i = 0; i < 30; i++) {
-//   db.employeeroles.create({
-//     EmployeeID: faker.random.number({min: 1,max: 30}),
-//     RoleID: faker.random.number({min: 1,max: 3}),
-//     ProficiencyLevel: faker.random.arrayElement(['novice', 'competent', 'inexperienced']),    
-//   })
-  
-// };  
+ 
     
 
 
