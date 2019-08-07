@@ -29,7 +29,8 @@ const router = require("express").Router();
 // });
 
 router.route("/employee/:id").get( function (req, res) {
-  var employee = {
+  var employeeID = req.params.id.trim();
+  var employee = [{
     FirstName: 'Jon',
     LastName: 'Doe',
     Address: '2445 140th Ave NE, Bellevue, WA 98005',
@@ -39,8 +40,19 @@ router.route("/employee/:id").get( function (req, res) {
     Phone: '206-555-5555',
     CertType: 'food',
     CertExpDate: '2020-06-07'
-  }
-  res.json(employee);
+  },
+  {
+    FirstName: 'Jane',
+    LastName: 'Doe',
+    Address: '2445 140th Ave NE, Bellevue, WA 98005',
+    DOB: '2001-01-02',
+    StartDate: '2000-03-04',
+    Email: '123@gmail.com',
+    Phone: '425-555-5555',
+    CertType: 'cpr',
+    CertExpDate: '2019-12-12'
+  }]
+  res.json(employeeID);
 });
 
 // Search for employee by role
