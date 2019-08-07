@@ -25,11 +25,11 @@ app.use(express.static("public"));
 // Routes
 // =============================================================
 app.use(routes);
-
+ var syncvar = {force:false}
 // Syncing our sequelize models and then starting our Express app
 // Include {force:true} in sync() if we want to clear database
 // =============================================================
-db.sequelize.sync().then(function() {
+db.sequelize.sync(syncvar).then(function() {
   app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
   });

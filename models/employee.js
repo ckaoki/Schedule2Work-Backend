@@ -58,17 +58,17 @@ module.exports = function(sequelize, DataTypes) {
     // one-to-many relationships
       Employee.belongsTo(models.Business);
   
-    // many-to-many relationships 
+    // many-to-many relationships  
       Employee.belongsToMany(models.Role, {
         through: 'employee_roles',
         as: 'role',
-        foreignKey: 'employeeID',
+        foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
       Employee.belongsToMany(models.Employee_Group, {
         through: 'employee_groups',
-        as: 'employee_group',
-        foreignKey: 'employeeID',
+        as: 'group',
+        foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
     }; 

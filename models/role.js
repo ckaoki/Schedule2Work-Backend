@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
     Role.associate = function(models) {
       Role.belongsToMany(models.Employee, {
         through: 'employee_roles',
-        as: 'Employee',
+        as: 'employee',
         foreignKey: 'RoleID',
         onDelete: 'cascade'
       });

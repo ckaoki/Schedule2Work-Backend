@@ -1,4 +1,5 @@
 var db = require("../../models");
+// var Sequelize = require("sequelize");
 
 // Import node module for routing
 const router = require("express").Router();
@@ -7,21 +8,22 @@ const router = require("express").Router();
 router.route("/employee/:role").get( function (req, res) {console.log("Employee");
   // Change string of ingredients to array
   var role = req.params.role.trim();
+  console.log(role);
 
   db.Employee.findAll({
     include: [{
       model: db.Role,
-      as: 'roles',
-      attributes: ['id', 'role'],
+      as: 'role',
+      attributes: ['roleid', 'RoleName'],
       through: {
         model: db.EmployeeRoles
       },
       where: {
-        role: role
+        RoleName: role
       }
     }]
-  }).then(function (employees) {
-        res.json(employees);
+  }).then(function (foundEmp) {
+        res.json(foundEmp);
       });
 });
 
@@ -31,13 +33,13 @@ var firstName = req.params.firstName.trim();
   db.Role.findAll({
     include: [{
       model: db.Employee,
-      as: 'employees',
-      attributes: ['id', 'first_name'],
+      as: 'employee',
+      attributes: ['EmployeeID', 'FirstName'],
       through: {
         model: db.EmployeeRoles
       },
       where: {
-        first_name: firstName
+        FirstName: firstName
       }
     }]
   }).then(function (roles) {

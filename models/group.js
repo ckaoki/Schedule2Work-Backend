@@ -13,8 +13,13 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Group.associate = function(models) {  
-    // one-to-many relationships
       Group.belongsTo(models.Business);
+      Group.belongsToMany(models.Employee_Group, {
+        through: 'employee_groups',
+        as: 'Employee',
+        foreignKey: 'GroupID',
+        onDelete: 'cascade'
+      });
   }; 
 
   return Group;
