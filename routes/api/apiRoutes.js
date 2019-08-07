@@ -52,7 +52,7 @@ router.route("/employee/:id").get( function (req, res) {
     CertType: 'cpr',
     CertExpDate: '2019-12-12'
   }]
-  res.json(employeeID);
+  res.json(employee[employeeID]);
 });
 
 // Search for employee by role
