@@ -46,7 +46,7 @@ for (let i = 0; i < 30; i++) {
   
 };   
 
-
+// This isn't working 
 for (let i = 0; i < 30; i++) {
   db.EmployeeRoles,roles_ibfk_1.create({
     EmployeeID: faker.random.number({min: 1,max: 30}),
