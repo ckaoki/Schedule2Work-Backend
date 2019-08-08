@@ -28,8 +28,7 @@ db.employee.create({
     
     
 for (let i = 0; i < 30; i++) {
-  db.address.create({
-        
+  db.address.create({   
     Street: faker.address.streetAddress(),
     City: faker.random.arrayElement(["Seattle", "Bellevue","Kirkland","Issaquah", "Redmond", "Bothell", "Lynnwood", "Everett", "Renton", "Woodinville", "North Bend"]),
     State: "WA",
