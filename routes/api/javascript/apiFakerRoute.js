@@ -7,12 +7,12 @@ var faker = require("faker");
 // The following code generates the information to populate a 14 day schedule used for testing
 
 var schedule = [];
-var myDate = new Date();
 for (let i = 0; i<14; i++){
+ 
   schedule.push(
     {
-      date: myDate + i, 
-      shifts: 
+      Date: "2019/8/"+(14+i), 
+      Shifts: 
        
         [
           {
@@ -20,7 +20,7 @@ for (let i = 0; i<14; i++){
             StartTime: 0800,
             EndTime: 1300,
             RoleName: "Grill",
-            ProficiencyLevel: "competent",
+            ProficiencyLevel: "Competent",
             FirstName: faker.name.firstName(),
             LastName: faker.name.lastName(),
             Phone: faker.phone.phoneNumber(),
@@ -31,7 +31,7 @@ for (let i = 0; i<14; i++){
             StartTime: 0800,
             EndTime: 1300,
             RoleName: "Counter",
-            ProficiencyLevel: "competent",
+            ProficiencyLevel: "Competent",
             FirstName: faker.name.firstName(),
             LastName: faker.name.lastName(),
             Phone: faker.phone.phoneNumber(),
@@ -40,8 +40,8 @@ for (let i = 0; i<14; i++){
             BusinessID: 1,
             StartTime: 1100,
             EndTime: 1400,
-            RoleName: "fry",
-            ProficiencyLevel: "competent",
+            RoleName: "Fry",
+            ProficiencyLevel: "Competent",
             FirstName: faker.name.firstName(),
             LastName: faker.name.lastName(),
             Phone: faker.phone.phoneNumber(),
@@ -51,7 +51,7 @@ for (let i = 0; i<14; i++){
             StartTime: 1100,
             EndTime: 1600,
             RoleName: "Grill",
-            ProficiencyLevel: "novice",
+            ProficiencyLevel: "Novice",
             FirstName: faker.name.firstName(),
             LastName: faker.name.lastName(),
             Phone: faker.phone.phoneNumber(),
@@ -61,7 +61,7 @@ for (let i = 0; i<14; i++){
             StartTime: 1100,
             EndTime: 1500,
             RoleName: "Counter",
-            ProficiencyLevel: "novice",
+            ProficiencyLevel: "Novice",
             FirstName: faker.name.firstName(),
             LastName: faker.name.lastName(),
             Phone: faker.phone.phoneNumber(),
@@ -71,7 +71,7 @@ for (let i = 0; i<14; i++){
             StartTime: 1100,
             EndTime: 1600,
             RoleName: "Counter",
-            ProficiencyLevel: "competent",
+            ProficiencyLevel: "Competent",
             FirstName: faker.name.firstName(),
             LastName: faker.name.lastName(),
             Phone: faker.phone.phoneNumber(),
@@ -81,7 +81,7 @@ for (let i = 0; i<14; i++){
             StartTime: 1500,
             EndTime: 1900,
             RoleName: "Counter",
-            ProficiencyLevel: "novice",
+            ProficiencyLevel: "Novice",
             FirstName: faker.name.firstName(),
             LastName: faker.name.lastName(),
             Phone: faker.phone.phoneNumber(),
@@ -91,7 +91,7 @@ for (let i = 0; i<14; i++){
           StartTime: 1600,
           EndTime: 2000,
           RoleName: "Counter",
-          ProficiencyLevel: "novice",
+          ProficiencyLevel: "Novice",
           FirstName: faker.name.firstName(),
           LastName: faker.name.lastName(),
           Phone: faker.phone.phoneNumber(),
@@ -101,7 +101,7 @@ for (let i = 0; i<14; i++){
           StartTime: 1700,
           EndTime: 2200,
           RoleName: "Counter",
-          ProficiencyLevel: "competent",
+          ProficiencyLevel: "Competent",
           FirstName: faker.name.firstName(),
           LastName: faker.name.lastName(),
           Phone: faker.phone.phoneNumber(),
@@ -111,7 +111,7 @@ for (let i = 0; i<14; i++){
           StartTime: 1500,
           EndTime: 2000,
           RoleName: "Grill",
-          ProficiencyLevel: "novice",
+          ProficiencyLevel: "Novice",
           FirstName: faker.name.firstName(),
           LastName: faker.name.lastName(),
           Phone: faker.phone.phoneNumber(),
@@ -121,7 +121,7 @@ for (let i = 0; i<14; i++){
           StartTime: 1700,
           EndTime: 2200,
           RoleName: "Grill",
-          ProficiencyLevel: "competent",
+          ProficiencyLevel: "Competent",
           FirstName: faker.name.firstName(),
           LastName: faker.name.lastName(),
           Phone: faker.phone.phoneNumber(),
