@@ -1,12 +1,12 @@
 var db = require("../../models");
 // var Sequelize = require("sequelize");
-
+var helperFuncs = require("./javascript/helperFunctions");
 // Import node module for routing
 const router = require("express").Router();
 
 // TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
 // Search for employee by id
-router.route("/employee2/:id").get( function (req, res) {
+router.route("/employeeDB/:id").get( function (req, res) {
 
   var employeeID = req.params.id.trim();
   db.employee.findByPk(employeeID,
@@ -21,11 +21,38 @@ router.route("/employee2/:id").get( function (req, res) {
   ).then(function (Employee) {
     db.address.findOne({employeeEmployeeID:employeeID})
     .then(function (Address){
-      console.log(Address);
+
       var result = {Employee, Address};
-      res.json(result);
+      var temp = helperFuncs.parseEmployee(result)
+      res.json(temp);
     })
   });
+});
+
+router.route("/employeesDB").get( function (req, res) {
+  db.employee.findAll(
+    { where: 
+      {businessBusinessID: 1}
+    },
+    { limit : 1
+    },
+    { include: [{
+      model: db.role,
+      as: 'role',
+      attributes: ['roleid', 'RoleName'],
+      through: {
+        model: db.employeeroles
+      }},
+    ]}
+  ).then(function (Employee) {
+    // db.address.findOne({employeeEmployeeID:employeeID})
+    // .then(function (Address){
+
+    //   var result = {Employee, Address};
+      var temp = helperFuncs.parseEmployees(Employee)
+      res.json(temp);
+    })
+  // });
 });
 
 // TODO: Temporary routes for testing front end while building front end
