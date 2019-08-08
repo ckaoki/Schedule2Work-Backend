@@ -1,6 +1,6 @@
 // Model for group
 module.exports = function(sequelize, DataTypes) {
-  var Group = sequelize.define("Group", {
+  var Group = sequelize.define("group", {
     GroupID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -13,8 +13,13 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Group.associate = function(models) {  
-    // one-to-many relationships
-      Group.belongsTo(models.Business);
+      Group.belongsTo(models.business);
+      Group.belongsToMany(models.employee_group, {
+        through: 'employee_groups',
+        as: 'Employee',
+        foreignKey: 'GroupID',
+        onDelete: 'cascade'
+      });
   }; 
 
   return Group;

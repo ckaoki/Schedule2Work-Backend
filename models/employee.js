@@ -1,6 +1,8 @@
 // Model for employee
+var bcrypt = require('bcrypt');
+
 module.exports = function(sequelize, DataTypes) {
-    var Employee = sequelize.define("Employee", {
+    var Employee = sequelize.define("employee", {
       EmployeeID: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -49,30 +51,42 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.TEXT
       },
       Password: {
-        type: DataTypes.TEXT,
-        allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false,
+        required: true,
+        len: [5,12]
       }
     });
 
+    //generate a hash for password with bcrypt
+    Employee.generateHash = function (Password) {
+    return bcrypt.hashSync(Password, bcrypt.genSaltSync(8), null);
+    };
+
+    //check if password is valid
+    Employee.prototype.validatePassword = function (Password) {
+      return bcrypt.compareSync(Password, this.localPassword);
+    };
+  
+
     Employee.associate = function(models) {  
     // one-to-many relationships
-      Employee.belongsTo(models.Business);
+      Employee.belongsTo(models.business);
   
-    // many-to-many relationships 
-      Employee.belongsToMany(models.Role, {
+    // many-to-many relationships  
+      Employee.belongsToMany(models.role, {
         through: 'employee_roles',
         as: 'role',
-        foreignKey: 'employeeID',
+        foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
-      Employee.belongsToMany(models.Employee_Group, {
+      Employee.belongsToMany(models.employee_group, {
         through: 'employee_groups',
-        as: 'employee_group',
-        foreignKey: 'employeeID',
+        as: 'group',
+        foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
-    }; 
- 
+    };  
   
     return Employee;
   };
