@@ -1,4 +1,6 @@
 // Model for employee
+var bcrypt = require('bcrypt');
+
 module.exports = function(sequelize, DataTypes) {
     var Employee = sequelize.define("employee", {
       EmployeeID: {
@@ -49,10 +51,23 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.TEXT
       },
       Password: {
-        type: DataTypes.TEXT,
-        allowNull: false
+        type: DataTypes.STRING,
+        allowNull: false,
+        required: true,
+        len: [5,12]
       }
     });
+
+    //generate a hash for password with bcrypt
+    Employee.generateHash = function (Password) {
+    return bcrypt.hashSync(Password, bcrypt.genSaltSync(8), null);
+    };
+
+    //check if password is valid
+    Employee.prototype.validatePassword = function (Password) {
+      return bcrypt.compareSync(Password, this.localPassword);
+    };
+  
 
     Employee.associate = function(models) {  
     // one-to-many relationships
@@ -71,8 +86,7 @@ module.exports = function(sequelize, DataTypes) {
         foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
-    }; 
- 
+    };  
   
     return Employee;
   };

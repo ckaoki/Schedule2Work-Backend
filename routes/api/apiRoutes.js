@@ -4,7 +4,7 @@ var db = require("../../models");
 // Import node module for routing
 const router = require("express").Router();
 
-// TODO: This route will be used.
+// TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
 // Search for employee by id
 router.route("/employee2/:id").get( function (req, res) {
 
@@ -52,7 +52,7 @@ router.route("/thisweeksschedule").get( function (req, res) {
 
 
 
-
+// TODO: delete this function if not needed
 // Search for employee by role
 router.route("/employee/:role").get( function (req, res) {console.log("Employee");
   // Change string of ingredients to array
@@ -75,6 +75,7 @@ router.route("/employee/:role").get( function (req, res) {console.log("Employee"
       });
 });
 
+// TODO: delete this function if not needed
 // Search for roles by employee
 router.route("/role/:firstName").get( function (req, res) {console.log("role");
 var firstName = req.params.firstName.trim();
