@@ -46,11 +46,26 @@ for (let i = 0; i < 30; i++) {
   })
 };
 
+let roles = ['Counter', 'Grill', 'Fry', 'Manager'];
 
+for (let i = 0; i < roles.length; i++) {
+  db.role.create({
+    RoleName: roles[i]
+  });
+};
 
+let employeeCount = 30;
 
- 
-    
+for (let i = 1; i < employeeCount + 1; i++) {
+  const randomRole = faker.random.number({min: 1, max: 3});
+  db.employee_roles.create({
+        
+    ProficiencyLevel: faker.random.arrayElement(
+      ["inexperienced", "novice", "competent"]),   
+    EmployeeID: i,
+    RoleID: faker.random.number({min: 1,max: 3})
+  })
+}
 
 
   
