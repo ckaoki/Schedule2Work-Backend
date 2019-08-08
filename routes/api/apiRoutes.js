@@ -6,112 +6,48 @@ const router = require("express").Router();
 
 // TODO: This route will be used.
 // Search for employee by id
-// router.route("/employee/:id").get( function (req, res) {
+router.route("/employee2/:id").get( function (req, res) {
 
-//   var employeeID = req.params.id.trim();
-//   db.employee.findByPk(employeeID,
-//     {include: [{
-//       model: db.role,
-//       as: 'role',
-//       attributes: ['roleid', 'RoleName'],
-//       through: {
-//         model: db.employeeroles
-//       }},
-//     ]}
-//   ).then(function (Employee) {
-//     db.address.findOne({employeeEmployeeID:employeeID})
-//     .then(function (Address){
-//       console.log(Address);
-//       var result = {Employee, Address};
-//       res.json(result);
-//     })
-//   });
-// });
+  var employeeID = req.params.id.trim();
+  db.employee.findByPk(employeeID,
+    {include: [{
+      model: db.role,
+      as: 'role',
+      attributes: ['roleid', 'RoleName'],
+      through: {
+        model: db.employeeroles
+      }},
+    ]}
+  ).then(function (Employee) {
+    db.address.findOne({employeeEmployeeID:employeeID})
+    .then(function (Address){
+      console.log(Address);
+      var result = {Employee, Address};
+      res.json(result);
+    })
+  });
+});
+
+// TODO: Temporary routes for testing front end while building front end
+var tempData1 = require("./javascript/tempData1.js");
+var tempData2 = require("./javascript/tempData2.js");
 
 // TODO: delete this temporary route.
 router.route("/employee/:id").get( function (req, res) {
   var employeeID = req.params.id.trim();
-  var employee = [{
-    FirstName: 'Jon',
-    LastName: 'Doe',
-    Address: '2445 140th Ave NE, Bellevue, WA 98005',
-    DOB: '1901-01-02',
-    StartDate: '2019-03-04',
-    Email: 'abc@gmail.com',
-    Phone: '206-555-5555',
-    CertType: 'food',
-    CertExpDate: '2020-06-07'
-  },
-  {
-    FirstName: 'Jane',
-    LastName: 'Doe',
-    Address: '2445 140th Ave NE, Bellevue, WA 98005',
-    DOB: '2001-01-02',
-    StartDate: '2000-03-04',
-    Email: '123@gmail.com',
-    Phone: '425-555-5555',
-    CertType: 'cpr',
-    CertExpDate: '2019-12-12'
-  }]
-  res.json(employee[employeeID]);
+  res.json(tempData1.employees[employeeID]);
 });
-
 
 // TODO: delete this temporary route.
-router.route("/employees").get( function (req, res) {
-  var employees = [{
-    FirstName: 'Jon',
-    LastName: 'Doe',
-    Address: '2445 140th Ave NE, Bellevue, WA 98005',
-    DOB: '1901-01-02',
-    StartDate: '2019-03-04',
-    Email: 'abc@gmail.com',
-    Phone: '206-555-5555',
-    CertType: 'food',
-    CertExpDate: '2020-06-07'
-  },
-  {
-    FirstName: 'Jane',
-    LastName: 'Ray',
-    Address: '2445 140th Ave NE, Bellevue, WA 98005',
-    DOB: '2001-01-02',
-    StartDate: '2000-03-04',
-    Email: '123@gmail.com',
-    Phone: '425-555-5555',
-    CertType: 'cpr',
-    CertExpDate: '2019-12-12'
-  },
-  {
-    FirstName: 'Jose',
-    LastName: 'Me',
-    Address: '24456 140th Ave NE, Bellevue, WA 98005',
-    DOB: '2002-01-02',
-    StartDate: '2000-03-04',
-    Email: 'abc123@gmail.com',
-    Phone: '426-555-5555',
-    CertType: 'eating',
-    CertExpDate: '2019-12-12'
-  },
-  {
-    FirstName: 'Jake',
-    LastName: 'Fa',
-    Address: '2445 140th Ave NE, Bellevue, WA 98005',
-    DOB: '2003-01-02',
-    StartDate: '2000-03-04',
-    Email: '123@gmail.com',
-    Phone: '427-555-5555',
-    CertType: 'sleeping',
-    CertExpDate: '2019-12-12'
-  }
-  ]
-  res.json(employees);
+router.route("/employees").get( function (req, res) {  
+  res.json(tempData1.employees);
 });
 
-
-
-
-
-
+// TODO: delete this temporary route.
+router.route("/thisweeksschedule").get( function (req, res) {  
+  console.log('week');
+  res.json(tempData2.weeklySchedule);
+});
 
 
 
