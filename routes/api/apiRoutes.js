@@ -31,6 +31,7 @@ router.route("/employee2/:id").get( function (req, res) {
 // TODO: Temporary routes for testing front end while building front end
 var tempData1 = require("./javascript/tempData1.js");
 var tempData2 = require("./javascript/tempData2.js");
+var apiFakerRoute = require("./javascript/apiFakerRoute.js");
 
 // TODO: delete this temporary route.
 router.route("/employee/:id").get( function (req, res) {
@@ -49,7 +50,12 @@ router.route("/thisweeksschedule").get( function (req, res) {
   res.json(tempData2.weeklySchedule);
 });
 
+//Faker route
+router.route("/schedule").get( function (req, res) {
+ 
+  res.json(apiFakerRoute.schedule);
 
+});
 
 
 // TODO: delete this function if not needed
