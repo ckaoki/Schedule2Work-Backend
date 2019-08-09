@@ -4,7 +4,7 @@
 var faker = require('faker');
 const db = require('../../models')
 
-
+//Business Table
 for (let i = 0; i < 30; i++) {
   db.business.create({
     BusinessName: faker.company.companyName(),
@@ -14,7 +14,7 @@ for (let i = 0; i < 30; i++) {
   
   
 };
-
+// Employee Table
 for (let i = 0; i < 30; i++) {
 db.employee.create({
      
@@ -35,7 +35,7 @@ db.employee.create({
   })
 };
     
-    
+// Address Table    
 for (let i = 0; i < 30; i++) {
   db.address.create({   
     Street: faker.address.streetAddress(),
@@ -45,8 +45,9 @@ for (let i = 0; i < 30; i++) {
   })
 };
 
-let roles = ['Counter', 'Grill', 'Fry', 'Manager'];
 
+// Employee-Roles Join Table
+let roles = ['Counter', 'Grill', 'Fry', 'Manager'];
 for (let i = 0; i < roles.length; i++) {
   db.role.create({
     RoleName: roles[i]
@@ -65,6 +66,130 @@ for (let i = 1; i < employeeCount + 1; i++) {
     RoleID: faker.random.number({min: 1,max: 3})
   })
 }
+// Shift Table
+for (let i=1; i<11; i++){
+
+  // db.shift.create({   
+    switch (i){
+      case 1:
+        db.shift.create({
+          StartTime: 0830,
+          EndTime: 1700,
+          ClockInTime: 0830,
+          ClockOutTime: 1700,
+          businessBusinessID: 1,
+         employeeEmployeeID: faker.random.number({min: 1,max: 30}),
+        });
+
+      case 2:
+          db.shift.create({
+            StartTime: 0900,
+            EndTime: 1630,
+            ClockInTime: 0900,
+            ClockOutTime: 1630,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30}),
+          });
+     
+
+      case 3:
+          db.shift.create({
+            StartTime: 1000,
+            EndTime: 1700,
+            ClockInTime: 1000,
+            ClockOutTime: 1700,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30}),
+          });
+          
+      case 4:        
+          db.shift.create({
+            StartTime: 1100,
+            EndTime: 1400,
+            ClockInTime: 1100,
+            ClockOutTime: 1400,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30})
+          });
+
+      case 5:
+          db.shift.create({
+            StartTime: 1100,
+            EndTime: 1730,
+            ClockInTime: 1100,
+            ClockOutTime: 1730,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30})
+          });
+
+      case 6:
+          db.shift.create({
+            StartTime: 1400,
+            EndTime: 1700,
+            ClockInTime: 1400,
+            ClockOutTime: 1700,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30})
+          });
+
+      case 7:
+          db.shift.create({
+            StartTime: 1630,
+            EndTime: 2030,
+            ClockInTime: 1630,
+            ClockOutTime: 2030,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30})
+          });
+
+      case 8:
+          db.shift.create({
+            StartTime: 1700,
+            EndTime: 2100,
+            ClockInTime: 1700,
+            ClockOutTime: 2100,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30})
+          });
+
+      case 9:
+          db.shift.create({
+            StartTime: 1730,
+            EndTime: 2130,
+            ClockInTime: 1730,
+            ClockOutTime: 2130,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30})
+          });
+
+      case 10:
+          db.shift.create({
+            StartTime: 1730,
+            EndTime: 2200,
+            ClockInTime: 1730,
+            ClockOutTime: 2200,
+            businessBusinessID: 1,
+            employeeEmployeeID: faker.random.number({min: 1,max: 30})
+          });
+    }
+      
+  }
+
+  //Shift-Role Join Table
+  for (let i = 0; i < 30; i++) {
+    db.shift_role.create({
+         
+        ShiftRoleID: faker.random.number({min: 1,max: 10}),
+        roleRoleID: faker.random.number({min: 1,max: 4}),
+        
+        
+      })
+    };
+
+
+
+
+ 
 
 
   
