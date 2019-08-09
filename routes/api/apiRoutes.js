@@ -15,44 +15,37 @@ router.route("/employeeDB/:id").get( function (req, res) {
       as: 'role',
       attributes: ['roleid', 'RoleName'],
       through: {
-        model: db.employeeroles
+        model: db.employee_roles
       }},
+      {
+        model:db.address,
+        as: 'address'
+      }
     ]}
-  ).then(function (Employee) {
-    db.address.findOne({employeeEmployeeID:employeeID})
-    .then(function (Address){
-
-      var result = {Employee, Address};
-      var temp = helperFuncs.parseEmployee(result)
-      res.json(temp);
+  ).then(function (employee) {
+      var parsedEmployee = helperFuncs.parseEmployee(employee)
+      res.json(parsedEmployee);
     })
-  });
 });
 
 router.route("/employeesDB").get( function (req, res) {
   db.employee.findAll(
-    { where: 
-      {businessBusinessID: 1}
-    },
-    { limit : 1
-    },
-    { include: [{
+    {include: [{
       model: db.role,
       as: 'role',
       attributes: ['roleid', 'RoleName'],
       through: {
-        model: db.employeeroles
+        model: db.employee_roles
       }},
+      {
+        model:db.address,
+        as: 'address'
+      }
     ]}
-  ).then(function (Employee) {
-    // db.address.findOne({employeeEmployeeID:employeeID})
-    // .then(function (Address){
-
-    //   var result = {Employee, Address};
-      var temp = helperFuncs.parseEmployees(Employee)
-      res.json(temp);
+  ).then(function (employees) {
+      var parsedEmployees = helperFuncs.parseEmployees(employees)
+      res.json(parsedEmployees);
     })
-  // });
 });
 
 // TODO: Temporary routes for testing front end while building front end

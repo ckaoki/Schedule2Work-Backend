@@ -1,9 +1,9 @@
 
 module.exports = {
   parseEmployee: function(employee){
-    let empl = employee.Employee;
-    let addr = employee.Address;
-    let roles = employee.Employee.role;
+    let empl = employee;
+    let addr = employee.address;
+    let roles = employee.role;
 
     let parsedAddr = addr.Street +" "+ addr.City +" "+ addr.State +" "+ addr.Zipcode;
     let parsedRoles = "";
@@ -31,7 +31,7 @@ module.exports = {
   parseEmployees: function(employees){
     var parsedEmployees =[];
     employees.forEach(employee =>{
-      parsedEmployees.append(this.parseEmployee(employee));
+      parsedEmployees.push(this.parseEmployee(employee));
     });
     return parsedEmployees;
   }

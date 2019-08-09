@@ -26,7 +26,6 @@ module.exports = function(sequelize, DataTypes) {
   
   Address.associate = function(models){
     Address.belongsTo(models.business);
-    Address.belongsTo(models.employee);
   }  
 
   return Address;

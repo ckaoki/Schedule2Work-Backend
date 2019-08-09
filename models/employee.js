@@ -72,6 +72,7 @@ module.exports = function(sequelize, DataTypes) {
     Employee.associate = function(models) {  
     // one-to-many relationships
       Employee.belongsTo(models.business);
+      Employee.belongsTo(models.address);
   
     // many-to-many relationships  
       Employee.belongsToMany(models.role, {

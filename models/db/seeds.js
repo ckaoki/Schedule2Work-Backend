@@ -5,6 +5,23 @@ var faker = require('faker');
 const db = require('../../models')
 
 
+for (let i = 0; i < 30; i++) {
+  db.business.create({
+    BusinessName: faker.company.companyName(),
+    PayPeriod: faker.random.arrayElement(['weekly', 'biweekly', 'semi-monthly', 'monthly']),
+    PayrollSystem: faker.random.arrayElement(["Quickbook", "ADP","Patriot Software","Gusto", "Deluxe", "Square", "PAYCHEX", "Paycor", "zenefits", "Justworks"]),     
+  })  
+};
+
+for (let i = 0; i < 30; i++) {
+  db.address.create({   
+    Street: faker.address.streetAddress(),
+    City: faker.random.arrayElement(["Seattle", "Bellevue","Kirkland","Issaquah", "Redmond", "Bothell", "Lynnwood", "Everett", "Renton", "Woodinville", "North Bend"]),
+    State: "WA",
+    Zipcode: faker.random.arrayElement(["98040", "98011", "98072", "98077","98101", "98114", "98113", "98004"]),   
+    businessBusinessID: 1,
+  })
+};
 
 for (let i = 0; i < 30; i++) {
 db.employee.create({
@@ -22,31 +39,15 @@ db.employee.create({
     CertType: "license",
     Password: faker.internet.password(),
     businessBusinessID: 1,
+    addressAddressID: i+1
     
   })
 };
     
     
-for (let i = 0; i < 30; i++) {
-  db.address.create({   
-    Street: faker.address.streetAddress(),
-    City: faker.random.arrayElement(["Seattle", "Bellevue","Kirkland","Issaquah", "Redmond", "Bothell", "Lynnwood", "Everett", "Renton", "Woodinville", "North Bend"]),
-    State: "WA",
-    Zipcode: faker.random.arrayElement(["98040", "98011", "98072", "98077","98101", "98114", "98113", "98004"]),   
-  })
-};
 
 
 
-for (let i = 0; i < 30; i++) {
-  db.business.create({
-    BusinessName: faker.company.companyName(),
-    PayPeriod: faker.random.arrayElement(['weekly', 'biweekly', 'semi-monthly', 'monthly']),
-    PayrollSystem: faker.random.arrayElement(["Quickbook", "ADP","Patriot Software","Gusto", "Deluxe", "Square", "PAYCHEX", "Paycor", "zenefits", "Justworks"]),     
-  })
-  
-  
-};
 
 //This isn't working 
 // for (let i = 0; i < 30; i++) {
