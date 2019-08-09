@@ -42,23 +42,171 @@ db.employee.create({
     addressAddressID: i+1
     
   })
+};   
+
+
+// Role Table
+let roles = ['Counter', 'Grill', 'Fry', 'Supervisor', 'Manager'];
+for (let i = 0; i < roles.length; i++) {
+  db.role.create({
+    RoleName: roles[i]
+  });
 };
-    
-    
 
 
 
 
-//This isn't working 
-// for (let i = 0; i < 30; i++) {
-//   db.employeeroles.create({
-//     EmployeeID: faker.random.number({min: 1,max: 30}),
-//     RoleID: faker.random.number({min: 1,max: 3}),
-//     ProficiencyLevel: faker.random.arrayElement(['novice', 'competent', 'inexperienced']),    
+
+
+
+
+// // Employee_roles Table
+// let employeeCount = 30;
+
+// for (let i = 1; i < employeeCount + 1; i++) {
+//   //const randomRole = faker.random.number({min: 1, max: 3});
+//   db.employee_roles.create({
+        
+//     ProficiencyLevel: faker.random.arrayElement(
+//       ["inexperienced", "novice", "competent"]),   
+//     EmployeeID: i,
+//     RoleID: faker.random.number({min: 1,max: 3})
 //   })
+// }
+
+
+
+// // Shift Table
+// for (let i=1; i<11; i++){
   
-// };  
-    
+//     switch (i){
+//       case 1:
+//         db.shift.create({
+//           StartTime: 0830,
+//           EndTime: 1700,
+//           ClockInTime: 0830,
+//           ClockOutTime: 1700,
+//           businessBusinessID: 1,
+//          employeeEmployeeID: faker.random.number({min: 1,max: 30}),
+//         });
+
+//       case 2:
+//           db.shift.create({
+//             StartTime: 0900,
+//             EndTime: 1630,
+//             ClockInTime: 0900,
+//             ClockOutTime: 1630,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30}),
+//           });
+     
+
+//       case 3:
+//           db.shift.create({
+//             StartTime: 1000,
+//             EndTime: 1700,
+//             ClockInTime: 1000,
+//             ClockOutTime: 1700,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30}),
+//           });
+          
+//       case 4:        
+//           db.shift.create({
+//             StartTime: 1100,
+//             EndTime: 1400,
+//             ClockInTime: 1100,
+//             ClockOutTime: 1400,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30})
+//           });
+
+//       case 5:
+//           db.shift.create({
+//             StartTime: 1100,
+//             EndTime: 1730,
+//             ClockInTime: 1100,
+//             ClockOutTime: 1730,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30})
+//           });
+
+//       case 6:
+//           db.shift.create({
+//             StartTime: 1400,
+//             EndTime: 1700,
+//             ClockInTime: 1400,
+//             ClockOutTime: 1700,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30})
+//           });
+
+//       case 7:
+//           db.shift.create({
+//             StartTime: 1630,
+//             EndTime: 2030,
+//             ClockInTime: 1630,
+//             ClockOutTime: 2030,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30})
+//           });
+
+//       case 8:
+//           db.shift.create({
+//             StartTime: 1700,
+//             EndTime: 2100,
+//             ClockInTime: 1700,
+//             ClockOutTime: 2100,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30})
+//           });
+
+//       case 9:
+//           db.shift.create({
+//             StartTime: 1730,
+//             EndTime: 2130,
+//             ClockInTime: 1730,
+//             ClockOutTime: 2130,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30})
+//           });
+
+//       case 10:
+//           db.shift.create({
+//             StartTime: 1730,
+//             EndTime: 2200,
+//             ClockInTime: 1730,
+//             ClockOutTime: 2200,
+//             businessBusinessID: 1,
+//             employeeEmployeeID: faker.random.number({min: 1,max: 30})
+//           });
+//     }
+      
+//   }
+
+  //Shift-Role Join Table
+  //for (let i = 0; i < 30; i++) {
+ 
+    db.shift_role.create({
+         
+       // ShiftID: i,
+       ShiftRoleID: 1, 
+       roleRoleID: 1,
+       ShiftID: 1,
+       RoleID: 1,
+        
+  //       // ShiftRoleID: i,
+        // roleRoleID: faker.random.number({min: 1,max: 4}),
+        // ShiftRoleID: faker.random.number({min: 1,max: 4}),
+        
+        
+      })
+  //  };
+
+
+
+
+ 
 
 
   
