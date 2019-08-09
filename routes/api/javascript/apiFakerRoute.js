@@ -17,7 +17,7 @@ for (let i = 0; i<14; i++){
         [
           {
             BusinessID: 1,
-            // ShiftID: faker.random.number({min: 1,max: 100}),
+            ShiftID: faker.random.number({min: 1,max: 100}),
             StartTime: 0800,
             EndTime: 1300,
             RoleName: "Grill",
@@ -29,7 +29,7 @@ for (let i = 0; i<14; i++){
           
           {
             BusinessID: 1,
-            // ShiftID: faker.random.number({min: 101,max: 201}),
+            ShiftID: faker.random.number({min: 101,max: 201}),
             StartTime: 0800,
             EndTime: 1300,
             RoleName: "Counter",
@@ -40,7 +40,7 @@ for (let i = 0; i<14; i++){
           },
           {
             BusinessID: 1,
-            // ShiftID: faker.random.number({min: 202,max: 303}),
+            ShiftID: faker.random.number({min: 202,max: 303}),
             StartTime: 1100,
             EndTime: 1400,
             RoleName: "Fry",
@@ -51,7 +51,7 @@ for (let i = 0; i<14; i++){
           },
           {
             BusinessID: 1,
-            // ShiftID: faker.random.number({min: 304,max: 404}),
+            ShiftID: faker.random.number({min: 304,max: 404}),
             StartTime: 1100,
             EndTime: 1600,
             RoleName: "Grill",
@@ -62,7 +62,7 @@ for (let i = 0; i<14; i++){
           },
           {
             BusinessID: 1,
-            // ShiftID: faker.random.number({min: 405,max: 505}),
+            ShiftID: faker.random.number({min: 405,max: 505}),
             StartTime: 1100,
             EndTime: 1500,
             RoleName: "Counter",
@@ -73,7 +73,7 @@ for (let i = 0; i<14; i++){
           },
           {
             BusinessID: 1,
-            // ShiftID: faker.random.number({min: 606,max: 706}),
+            ShiftID: faker.random.number({min: 606,max: 706}),
             StartTime: 1100,
             EndTime: 1600,
             RoleName: "Counter",
@@ -84,7 +84,7 @@ for (let i = 0; i<14; i++){
           },
           {
             BusinessID: 1,
-            // ShiftID: faker.random.number({min: 707,max: 807}),
+            ShiftID: faker.random.number({min: 707,max: 807}),
             StartTime: 1500,
             EndTime: 1900,
             RoleName: "Counter",
@@ -95,7 +95,7 @@ for (let i = 0; i<14; i++){
           },
         {
           BusinessID: 1,
-          // ShiftID: faker.random.number({min: 808,max: 908}),
+          ShiftID: faker.random.number({min: 808,max: 908}),
           StartTime: 1600,
           EndTime: 2000,
           RoleName: "Counter",
@@ -106,7 +106,7 @@ for (let i = 0; i<14; i++){
         },
         {
           BusinessID: 1,
-          // ShiftID: faker.random.number({min: 909,max: 1009}),
+          ShiftID: faker.random.number({min: 909,max: 1009}),
           StartTime: 1700,
           EndTime: 2200,
           RoleName: "Counter",
@@ -117,7 +117,7 @@ for (let i = 0; i<14; i++){
         },
         {
           BusinessID: 1,
-          // ShiftID: faker.random.number({min:1010,max: 1109}),
+          ShiftID: faker.random.number({min:1010,max: 1109}),
           StartTime: 1500,
           EndTime: 2000,
           RoleName: "Grill",
@@ -128,7 +128,7 @@ for (let i = 0; i<14; i++){
         },
         {
           BusinessID: 1,
-          // ShiftID: faker.random.number({min: 1110,max: 1210}),
+          ShiftID: faker.random.number({min: 1110,max: 1210}),
           StartTime: 1700,
           EndTime: 2200,
           RoleName: "Grill",
