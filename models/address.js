@@ -26,6 +26,9 @@ module.exports = function(sequelize, DataTypes) {
   
   Address.associate = function(models){
     Address.belongsTo(models.business);
+  //address has a 1-1 relationship to the employee table. Recommend changing the code to hasOne as shown below(MH):
+    // Address.hasOne(models.employee);
+    Address.belongsTo(models.employee);
   }  
 
   return Address;

@@ -16,7 +16,12 @@ module.exports = function(sequelize, DataTypes) {
   });
   
   ScheduleReq.associate = function(models) {
+// scheduleReq has a 1-1 relationship with business. Recommend changing the code to (MH):
+//  ScheduleReq.hasOne(models.business);
     ScheduleReq.belongsTo(models.business);
+// scheduleReq has a 1-N relationship with the scheudle table. Recommend changing the code to (MH):
+    //ScheduleReq.hasMany(models.schedule)
+
   }
   return ScheduleReq;
 };

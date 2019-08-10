@@ -29,6 +29,8 @@ module.exports = function(sequelize, DataTypes) {
 
       Role.belongsTo(models.business);
     };
+   
     return Role;
+
+
   };
-  
