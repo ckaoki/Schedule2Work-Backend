@@ -20,12 +20,12 @@ module.exports = function(sequelize, DataTypes) {
         onDelete: 'cascade'
       });
 
-      Role.belongsToMany(models.shift, {
-        through: 'shift_roles',
-        as: 'shift',
-        foreignKey: 'RoleID',
-        onDelete: 'cascade'
-      });
+    Role.belongsToMany(models.shift, {
+      through: 'shift_roles',
+      as: 'shift',
+      foreignKey: 'RoleID',
+      onDelete: 'cascade'
+    });
 
       Role.belongsTo(models.business);
     };

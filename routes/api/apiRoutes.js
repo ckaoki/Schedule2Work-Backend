@@ -1,10 +1,11 @@
 // Import local files
-var db = require("../../models");
-var helperFuncs = require("./javascript/helperFunctions");
+const db = require("../../models");
+const helperFuncs = require("./javascript/helperFunctions");
 // Import node module for routing
 const router = require("express").Router();
-var bcrypt = require("bcrypt");
-var saltRounds = 10;
+const csv = require("csv-string");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 // TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
 // Search for employee by id
@@ -58,22 +59,24 @@ router.route("/newEmployee").post( function (req, res)  {
   let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
   let today = yyyy +'-'+ mm +'-'+ dd;
 
-  console.log(today);
   // check if email already exists
   db.employee.findOne({
     where:{Email:req.body.email}})
-  .then(function(email){
-    if(email){
+  .then(function(employee){
+    if(employee){
       return res.status(400).send("Email already in use.");
     }
     else{
-      // create address
+      // parse address string and create json
       let address = helperFuncs.parseAddress(req.body.address);
       db.address.create(address)
       .then(function(dbAddress){
         let addressID = dbAddress.AddressID;
-        // hash password
-        bcrypt.hash(req.body.password, saltRounds, function (err,   hash) {
+        // parse roles from csv string
+        let rolesArray = csv.parse(req.body.roles)[0];
+        console.log(rolesArray);
+          // hash password
+        bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
           // create employee
           db.employee.create({
             // entered by user
@@ -135,6 +138,7 @@ router.route("/login/").get( function (req, res) {
 });
 
 
+// *************************************************************************************************************
 // TODO: Temporary routes for testing front end while building front end
 var tempData1 = require("./javascript/tempData1.js");
 var tempData2 = require("./javascript/tempData2.js");

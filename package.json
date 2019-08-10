@@ -20,6 +20,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
+    "csv-string": "^3.1.6",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
