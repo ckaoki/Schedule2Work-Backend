@@ -19,6 +19,10 @@ module.exports = function(sequelize, DataTypes) {
   Schedule.associate = function(models){
     Schedule.belongsTo(models.business);
     Schedule.belongsTo(models.schedule_req);
+
+//schedule has a 1-N relationship with the shift table. Recommend adding the following code. MH
+  //Schedule.hasMany(models.shift);
+
   }
 
   return Schedule;

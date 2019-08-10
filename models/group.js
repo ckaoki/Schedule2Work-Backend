@@ -20,6 +20,7 @@ module.exports = function(sequelize, DataTypes) {
         foreignKey: 'GroupID',
         onDelete: 'cascade'
       });
+
   }; 
 
   return Group;

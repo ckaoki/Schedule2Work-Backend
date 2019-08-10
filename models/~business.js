@@ -20,6 +20,17 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
+//In order to connect the tables associated with Business, I adding the following code(MH):
+// Business.associate = function(models){
+  // Business.belongsToMany(models.employee);
+  // Business.belongsToMany(models.role);
+  // Business.belongsToMany(models.group);
+  // Business.belongsToMany(models.address);
+  // Business.hasOne(models.scheduleReq);
+  // Business.belongsToMany(models.schedule);
+  // Business.belongsToMany(models.shift);
+// }
+
   return Business;
 };
 

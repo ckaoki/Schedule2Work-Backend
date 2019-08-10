@@ -71,7 +71,11 @@ module.exports = function(sequelize, DataTypes) {
 
     Employee.associate = function(models) {  
     // one-to-many relationships
+    // line 73 should be many-one relationships. employee to business is an N-1 relationship. Many employees have one buiness.MH
       Employee.belongsTo(models.business);
+    
+    //shift has a 1-N relationship with the employee table. MH
+      //Employee.hasMany(models.shift)
   
     // many-to-many relationships  
       Employee.belongsToMany(models.role, {
@@ -86,6 +90,9 @@ module.exports = function(sequelize, DataTypes) {
         foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
+      // address has a 1-1 relationship with employee.MH
+      // Employee.hasOne(models.address)
+
     };  
   
     return Employee;
