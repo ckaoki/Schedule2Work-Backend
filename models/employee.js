@@ -26,7 +26,17 @@ module.exports = function(sequelize, DataTypes) {
       },
       Email: {
         type: DataTypes.STRING,
-        defaultValue: ""
+        unique: true,
+        allowNull: false,        
+        validate: {
+          len: {
+              args: [6, 128],
+              msg: "Email address must be between 6 and 128 characters in length"
+          },
+          isEmail: {
+              msg: "Email address must be valid"
+          }
+        }
       },
       Phone: {
         type: DataTypes.STRING,
@@ -53,10 +63,10 @@ module.exports = function(sequelize, DataTypes) {
       Password: {
         type: DataTypes.STRING,
         allowNull: false,
-        required: true,
-        len: [5,12]
+        len:[2, 10]
       }
-    });
+    },
+    );
 
     //generate a hash for password with bcrypt
     Employee.generateHash = function (Password) {
@@ -73,9 +83,11 @@ module.exports = function(sequelize, DataTypes) {
     // one-to-many relationships
     // line 73 should be many-one relationships. employee to business is an N-1 relationship. Many employees have one buiness.MH
       Employee.belongsTo(models.business);
-    
+      Employee.belongsTo(models.address);
     //shift has a 1-N relationship with the employee table. MH
       //Employee.hasMany(models.shift)
+      // address has a 1-1 relationship with employee.MH
+      // Employee.hasOne(models.address)
   
     // many-to-many relationships  
       Employee.belongsToMany(models.role, {
@@ -90,8 +102,6 @@ module.exports = function(sequelize, DataTypes) {
         foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
-      // address has a 1-1 relationship with employee.MH
-      // Employee.hasOne(models.address)
 
     };  
   

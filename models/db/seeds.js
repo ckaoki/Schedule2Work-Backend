@@ -4,16 +4,26 @@
 var faker = require('faker');
 const db = require('../../models')
 
-//Business Table
+// Business Table
 for (let i = 0; i < 30; i++) {
   db.business.create({
     BusinessName: faker.company.companyName(),
     PayPeriod: faker.random.arrayElement(['weekly', 'biweekly', 'semi-monthly', 'monthly']),
     PayrollSystem: faker.random.arrayElement(["Quickbook", "ADP","Patriot Software","Gusto", "Deluxe", "Square", "PAYCHEX", "Paycor", "zenefits", "Justworks"]),     
-  })
-  
-  
+  })  
 };
+
+// Address Table
+for (let i = 0; i < 30; i++) {
+  db.address.create({   
+    Street: faker.address.streetAddress(),
+    City: faker.random.arrayElement(["Seattle", "Bellevue","Kirkland","Issaquah", "Redmond", "Bothell", "Lynnwood", "Everett", "Renton", "Woodinville", "North Bend"]),
+    State: "WA",
+    Zipcode: faker.random.arrayElement(["98040", "98011", "98072", "98077","98101", "98114", "98113", "98004"]),   
+    businessBusinessID: 1,
+  })
+};
+
 // Employee Table
 for (let i = 0; i < 30; i++) {
 db.employee.create({
@@ -31,23 +41,14 @@ db.employee.create({
     CertType: "license",
     Password: faker.internet.password(),
     businessBusinessID: 1,
+    addressAddressID: i+1
     
   })
-};
-    
-// Address Table    
-for (let i = 0; i < 30; i++) {
-  db.address.create({   
-    Street: faker.address.streetAddress(),
-    City: faker.random.arrayElement(["Seattle", "Bellevue","Kirkland","Issaquah", "Redmond", "Bothell", "Lynnwood", "Everett", "Renton", "Woodinville", "North Bend"]),
-    State: "WA",
-    Zipcode: faker.random.arrayElement(["98040", "98011", "98072", "98077","98101", "98114", "98113", "98004"]),   
-  })
-};
+};   
 
 
 // Role Table
-let roles = ['Counter', 'Grill', 'Fry', 'Manager'];
+let roles = ['Counter', 'Grill', 'Fry', 'Supervisor', 'Manager'];
 for (let i = 0; i < roles.length; i++) {
   db.role.create({
     RoleName: roles[i]
@@ -190,7 +191,6 @@ for (let i=1; i<11; i++){
   }
 
   // Create seeds for schedule table
-
 
   for (let i = 1; i < 30; i++) {
     db.schedule.create({         

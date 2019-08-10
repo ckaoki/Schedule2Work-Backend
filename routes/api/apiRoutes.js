@@ -1,33 +1,144 @@
-var db = require("../../models");
-// var Sequelize = require("sequelize");
-
+// Import local files
+const db = require("../../models");
+const helperFuncs = require("./javascript/helperFunctions");
 // Import node module for routing
 const router = require("express").Router();
+const csv = require("csv-string");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 // TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
 // Search for employee by id
-router.route("/employee2/:id").get( function (req, res) {
+router.route("/employeeDB/:id").get( function (req, res) {
 
-  var employeeID = req.params.id.trim();
+  let employeeID = req.params.id.trim();
   db.employee.findByPk(employeeID,
     {include: [{
       model: db.role,
       as: 'role',
       attributes: ['roleid', 'RoleName'],
       through: {
-        model: db.employeeroles
+        model: db.employee_roles
       }},
+      {
+        model:db.address,
+        as: 'address'
+      }
     ]}
-  ).then(function (Employee) {
-    db.address.findOne({employeeEmployeeID:employeeID})
-    .then(function (Address){
-      console.log(Address);
-      var result = {Employee, Address};
-      res.json(result);
+  ).then(function (employee) {
+      let parsedEmployee = helperFuncs.parseEmployee(employee)
+      res.json(parsedEmployee);
     })
+});
+
+router.route("/employeesDB").get( function (req, res) {
+  db.employee.findAll(
+    {include: [{
+      model: db.role,
+      as: 'role',
+      attributes: ['roleid', 'RoleName'],
+      through: {
+        model: db.employee_roles
+      }},
+      {
+        model:db.address,
+        as: 'address'
+      }
+    ]}
+  ).then(function (employees) {
+      let parsedEmployees = helperFuncs.parseEmployees(employees)
+      res.json(parsedEmployees);
+    })
+});
+
+// POST route for adding new employee
+router.route("/newEmployee").post( function (req, res)  {
+  let date = new Date();
+  let yyyy = date.getFullYear();
+  let dd = String(date.getDate()).padStart(2, '0');
+  let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+  let today = yyyy +'-'+ mm +'-'+ dd;
+
+  // check if email already exists
+  db.employee.findOne({
+    where:{Email:req.body.email}})
+  .then(function(employee){
+    if(employee){
+      return res.status(400).send("Email already in use.");
+    }
+    else{
+      // parse address string and create json
+      let address = helperFuncs.parseAddress(req.body.address);
+      db.address.create(address)
+      .then(function(dbAddress){
+        let addressID = dbAddress.AddressID;
+        // parse roles from csv string
+        let rolesArray = csv.parse(req.body.roles)[0];
+        console.log(rolesArray);
+          // hash password
+        bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+          // create employee
+          db.employee.create({
+            // entered by user
+            FirstName: req.body.firstname,
+            LastName: req.body.lastname,
+            Startdate: req.body.startdate,
+            DOB: req.body.birthdate,
+            CertType: req.body.certifytype,
+            CertExpDate: req.body.certifydate,
+            Email: req.body.email,
+            Phone: req.body.phone,
+            Password: hash,
+            
+            // values not supplied by user
+            addressAddressID: addressID,
+            Startdate: today,
+            MaxHours:20,
+            Wage:12.50,
+            businessBusinessID: 1 
+          })
+          .then(function(dbEmployee) {
+            res.status(200).json(dbEmployee);
+          })
+          .catch(function(err){
+            console.log(err);
+            res.status(400).send("Could not create new employee.");
+          })
+        });
+      });
+    };
+  });  
+});
+
+
+
+// TODO: Delete this route if not used
+router.route("/login/").get( function (req, res) {
+  db.employee.findOne({
+    where: {Email:req.body.email}
+    }
+  ).then(function (employee) {
+    if (!employee) {
+      //  res.redirect('/');
+      res.send('Employee not found!')
+    } 
+    else {
+      bcrypt.compare(req.body.password, employee.Password, function (err, result) {
+        if (result === true) {
+          // res.redirect('/home');
+          res.send(employee.Password);
+        }
+        else {
+          res.send('Incorrect password');
+          // res.redirect('/');
+        }
+      });
+    }
   });
 });
 
+
+// *************************************************************************************************************
 // TODO: Temporary routes for testing front end while building front end
 var tempData1 = require("./javascript/tempData1.js");
 var tempData2 = require("./javascript/tempData2.js");

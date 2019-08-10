@@ -34,11 +34,8 @@ module.exports = function(sequelize, DataTypes) {
       // many-to-many relationships 
     Shift.belongsToMany(models.role, {
       through: 'shift_roles',
-    // changed Role to role to address problem with join table
       as: 'role',
-      // change foreignKey to ShiftID
       foreignKey: 'ShiftID',
-     // foreignKey: 'ShiftRoleID',
       onDelete: 'cascade'
     });
   }   
