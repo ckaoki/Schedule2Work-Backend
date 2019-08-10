@@ -20,6 +20,13 @@ module.exports = function(sequelize, DataTypes) {
         onDelete: 'cascade'
       });
 
+      Role.belongsToMany(models.shift, {
+        through: 'shift_roles',
+        as: 'shift',
+        foreignKey: 'ShiftID',
+        onDelete: 'cascade'
+      });
+
       Role.belongsTo(models.business);
     };
     return Role;

@@ -48,6 +48,40 @@ router.route("/employeesDB").get( function (req, res) {
     })
 });
 
+// POST route for adding new employee
+router.route("/newEmployee").post( function (req, res) {
+  console.log(req.body);
+  db.employee.create({
+    // entered by user
+    FirstName: req.body.FirstName,
+    LastName: req.body.LastName,
+    StartDate: req.body.startdate,
+    DOB: req.body.birthdate,
+    CertType: req.body.cerifytype,
+    CertExpDate: req.body.cerifydate,
+    Email: req.body.email,
+    Phone: req.body.phone,
+    Password: req.body.password,
+
+    // default values
+    Startdate: now(),
+    MaxHours:20,
+    Wage:15
+
+  })
+    .then(function(dbEmployee) {
+      res.json(dbEmployee);
+    });
+});
+
+
+
+
+
+
+
+
+
 // TODO: Temporary routes for testing front end while building front end
 var tempData1 = require("./javascript/tempData1.js");
 var tempData2 = require("./javascript/tempData2.js");
