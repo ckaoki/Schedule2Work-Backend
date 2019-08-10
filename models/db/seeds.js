@@ -180,21 +180,7 @@ for (let i=1; i<11; i++){
   }
 
   //Shift-Role Join Table
-  //for (let i = 0; i < 30; i++) {
- 
-    // db.shift_roles.create({
-         
-  //      // ShiftID: i,
-  //      ShiftRoleID: 1, 
-  //      RoleID: 1,
-  //     ShiftID: 1,
-    
-    
-        
 
-        
-        
-  // })
   for (let i = 1; i < 30; i++) {
     db.shift_roles.create({         
         ShiftRoleID: i,   
@@ -203,10 +189,23 @@ for (let i=1; i<11; i++){
     })
   }
 
+  // Create seeds for schedule table
 
 
+  for (let i = 1; i < 30; i++) {
+    db.schedule.create({         
+      ScheduleID: i,
+      ShiftID: faker.random.number({min: 1,max: 100}),
+      StartDate: 2019/08/11,
+      EndDate: 2019/08/24,
+      businessBusinessID: 1,
+      shiftShiftID: i,
 
- 
+        
+    })
+  }
+
+
 
 
   
