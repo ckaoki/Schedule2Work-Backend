@@ -19,6 +19,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     ClockOutTime:{
       type: DataTypes.INTEGER,
+    },
+    Date:{
+      type: DataTypes.DATEONLY,
+      allowNull: false
     }
 
   });
