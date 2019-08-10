@@ -109,14 +109,30 @@ router.route("/newEmployee").post( function (req, res)  {
 
 
 
-// TODO: Delete this route
-router.route("/pw").get( function (req, res) {
-  var employeeID = req.params.id.trim();
-  res.json(tempData1.employees[employeeID]);
+// TODO: Delete this route if not used
+router.route("/login/").get( function (req, res) {
+  db.employee.findOne({
+    where: {Email:req.body.email}
+    }
+  ).then(function (employee) {
+    if (!employee) {
+      //  res.redirect('/');
+      res.send('Employee not found!')
+    } 
+    else {
+      bcrypt.compare(req.body.password, employee.Password, function (err, result) {
+        if (result === true) {
+          // res.redirect('/home');
+          res.send(employee.Password);
+        }
+        else {
+          res.send('Incorrect password');
+          // res.redirect('/');
+        }
+      });
+    }
+  });
 });
-
-
-
 
 
 // TODO: Temporary routes for testing front end while building front end
