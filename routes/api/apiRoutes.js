@@ -3,6 +3,8 @@ var db = require("../../models");
 var helperFuncs = require("./javascript/helperFunctions");
 // Import node module for routing
 const router = require("express").Router();
+var bcrypt = require("bcrypt");
+var saltRounds = 10;
 
 // TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
 // Search for employee by id
@@ -49,42 +51,69 @@ router.route("/employeesDB").get( function (req, res) {
 });
 
 // POST route for adding new employee
-router.route("/newEmployee").post( function (req, res) {
-  console.log(req.body);
-  // res.json(req.body);
-  let addr = helperFuncs.parseAddress(req.body.address)
-  // let addr = "abc"
-  res.json(addr);
-  // db.employee.create({
-  //   // entered by user
-  //   FirstName: req.body.firstname,
-  //   LastName: req.body.lastname,
-  //   StartDate: req.body.startdate,
-  //   DOB: req.body.birthdate,
-  //   CertType: req.body.cerifytype,
-  //   CertExpDate: req.body.cerifydate,
-  //   Email: req.body.email,
-  //   Phone: req.body.phone,
-  //   Password: req.body.password,
+router.route("/newEmployee").post( function (req, res)  {
+  let date = new Date();
+  let yyyy = date.getFullYear();
+  let dd = String(date.getDate()).padStart(2, '0');
+  let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
+  let today = yyyy +'-'+ mm +'-'+ dd;
 
-  //   // default values
-  //   Startdate: now(),
-  //   MaxHours:20,
-  //   Wage:15
-  //   businessBusinessID: 1
-
-  // Need to set the same as employeeID
-  //   addressAddressID:
-
-  // })
-  //   .then(function(dbEmployee) {
-  //     res.json(dbEmployee);
-  //   });
+  console.log(today);
+  // check if email already exists
+  db.employee.findOne({
+    where:{Email:req.body.email}})
+  .then(function(email){
+    if(email){
+      return res.status(400).send("Email already in use.");
+    }
+    else{
+      // create address
+      let address = helperFuncs.parseAddress(req.body.address);
+      db.address.create(address)
+      .then(function(dbAddress){
+        let addressID = dbAddress.AddressID;
+        // hash password
+        bcrypt.hash(req.body.password, saltRounds, function (err,   hash) {
+          // create employee
+          db.employee.create({
+            // entered by user
+            FirstName: req.body.firstname,
+            LastName: req.body.lastname,
+            Startdate: req.body.startdate,
+            DOB: req.body.birthdate,
+            CertType: req.body.certifytype,
+            CertExpDate: req.body.certifydate,
+            Email: req.body.email,
+            Phone: req.body.phone,
+            Password: hash,
+            
+            // values not supplied by user
+            addressAddressID: addressID,
+            Startdate: today,
+            MaxHours:20,
+            Wage:12.50,
+            businessBusinessID: 1 
+          })
+          .then(function(dbEmployee) {
+            res.status(200).json(dbEmployee);
+          })
+          .catch(function(err){
+            console.log(err);
+            res.status(400).send("Could not create new employee.");
+          })
+        });
+      });
+    };
+  });  
 });
 
 
 
-
+// TODO: Delete this route
+router.route("/pw").get( function (req, res) {
+  var employeeID = req.params.id.trim();
+  res.json(tempData1.employees[employeeID]);
+});
 
 
 

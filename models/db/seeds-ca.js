@@ -1,5 +1,7 @@
 var faker = require('faker');
 const db = require('../../models')
+var bcrypt = require("bcrypt");
+var saltRounds = 10;
 
 // Business Table
 for (let i = 0; i < 30; i++) {
@@ -23,22 +25,24 @@ for (let i = 0; i < 30; i++) {
 
 // Employee Table
 for (let i = 0; i < 30; i++) {
-db.employee.create({     
-    FirstName: faker.name.firstName(),
-    LastName: faker.name.lastName(),
-    DOB: faker.date.between('1999-01-01', '2002-01-05'),
-    Startdate: faker.date.between('2018-01-01','2019-08-01'),
-    Email: faker.internet.email(),
-    Phone: faker.phone.phoneNumber(),
-    MinHours: faker.random.number({min: 2,max: 4}),
-    MaxHours: faker.random.number({min: 8,max: 20}),
-    Wage: faker.random.arrayElement([12.50, 13.00,13.25, 12.75, 12.00, 12.75]),
-    CertExpDate: faker.date.between('2018-01-01','2020-08-01'),
-    CertType: "license",
-    Password: faker.internet.password(),
-    businessBusinessID: 1,
-    addressAddressID: i+1    
-  })
+  bcrypt.hash(faker.internet.password(), saltRounds, function (err,   hash) {
+    db.employee.create({     
+        FirstName: faker.name.firstName(),
+        LastName: faker.name.lastName(),
+        DOB: faker.date.between('1999-01-01', '2002-01-05'),
+        Startdate: faker.date.between('2018-01-01','2019-08-01'),
+        Email: faker.internet.email(),
+        Phone: faker.phone.phoneNumber(),
+        MinHours: faker.random.number({min: 2,max: 4}),
+        MaxHours: faker.random.number({min: 8,max: 20}),
+        Wage: faker.random.arrayElement([12.50, 13.00,13.25, 12.75, 12.00, 12.75]),
+        CertExpDate: faker.date.between('2018-01-01','2020-08-01'),
+        CertType: "license",
+        Password: hash,
+        businessBusinessID: 1,
+        addressAddressID: i+1    
+      })
+    });
 };   
 
 

@@ -40,21 +40,21 @@ module.exports = {
 
   parseAddress: function(address){
     let addrParts = parseAddress.parseLocation(address);  
-    let completeStreet ="";
+    let Street ="";
     
-    if ("number" in addrParts){completeStreet = addrParts.number};
-    if ("prefix" in addrParts){completeStreet += " " + addrParts.prefix};
-    if ("street" in addrParts){completeStreet += " " + addrParts.street};
-    if ("type" in addrParts){completeStreet += " " + addrParts.type};
-    if ("suffix" in addrParts){completeStreet += " " + addrParts.suffix};
-    if ("sec_unit_type" in addrParts){completeStreet += " " + addrParts.sec_unit_type};
-    if ("sec_unit_num" in addrParts){completeStreet += " " + addrParts.sec_unit_num};
+    if ("number" in addrParts){Street = addrParts.number};
+    if ("prefix" in addrParts){Street += " " + addrParts.prefix};
+    if ("street" in addrParts){Street += " " + addrParts.street};
+    if ("type" in addrParts){Street += " " + addrParts.type};
+    if ("suffix" in addrParts){Street += " " + addrParts.suffix};
+    if ("sec_unit_type" in addrParts){Street += " " + addrParts.sec_unit_type};
+    if ("sec_unit_num" in addrParts){Street += " " + addrParts.sec_unit_num};
 
     let parsedAddr = {
-      completeStreet,
-      city: addrParts.city,
-      state: addrParts.state,
-      zipcode: addrParts.zip
+      Street,
+      City: addrParts.city,
+      State: addrParts.state,
+      Zipcode: addrParts.zip
     }
 
     return parsedAddr;
