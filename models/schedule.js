@@ -7,11 +7,11 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     StartDate:{
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull:false
     },
     EndDate:{
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
     }
   });
