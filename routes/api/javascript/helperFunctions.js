@@ -1,3 +1,5 @@
+// Import module to parse street address
+var parseAddress = require("parse-address");
 
 module.exports = {
   parseEmployee: function(employee){
@@ -29,10 +31,32 @@ module.exports = {
   },
 
   parseEmployees: function(employees){
-    var parsedEmployees =[];
+    let parsedEmployees =[];
     employees.forEach(employee =>{
       parsedEmployees.push(this.parseEmployee(employee));
     });
     return parsedEmployees;
+  },
+
+  parseAddress: function(address){
+    let addrParts = parseAddress.parseLocation(address);  
+    let completeStreet ="";
+    
+    if ("number" in addrParts){completeStreet = addrParts.number};
+    if ("prefix" in addrParts){completeStreet += " " + addrParts.prefix};
+    if ("street" in addrParts){completeStreet += " " + addrParts.street};
+    if ("type" in addrParts){completeStreet += " " + addrParts.type};
+    if ("suffix" in addrParts){completeStreet += " " + addrParts.suffix};
+    if ("sec_unit_type" in addrParts){completeStreet += " " + addrParts.sec_unit_type};
+    if ("sec_unit_num" in addrParts){completeStreet += " " + addrParts.sec_unit_num};
+
+    let parsedAddr = {
+      completeStreet,
+      city: addrParts.city,
+      state: addrParts.state,
+      zipcode: addrParts.zip
+    }
+
+    return parsedAddr;
   }
 }

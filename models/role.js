@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
       Role.belongsToMany(models.shift, {
         through: 'shift_roles',
         as: 'shift',
-        foreignKey: 'ShiftID',
+        foreignKey: 'RoleID',
         onDelete: 'cascade'
       });
 

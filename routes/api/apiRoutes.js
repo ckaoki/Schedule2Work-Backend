@@ -1,5 +1,5 @@
+// Import local files
 var db = require("../../models");
-// var Sequelize = require("sequelize");
 var helperFuncs = require("./javascript/helperFunctions");
 // Import node module for routing
 const router = require("express").Router();
@@ -8,7 +8,7 @@ const router = require("express").Router();
 // Search for employee by id
 router.route("/employeeDB/:id").get( function (req, res) {
 
-  var employeeID = req.params.id.trim();
+  let employeeID = req.params.id.trim();
   db.employee.findByPk(employeeID,
     {include: [{
       model: db.role,
@@ -23,7 +23,7 @@ router.route("/employeeDB/:id").get( function (req, res) {
       }
     ]}
   ).then(function (employee) {
-      var parsedEmployee = helperFuncs.parseEmployee(employee)
+      let parsedEmployee = helperFuncs.parseEmployee(employee)
       res.json(parsedEmployee);
     })
 });
@@ -43,7 +43,7 @@ router.route("/employeesDB").get( function (req, res) {
       }
     ]}
   ).then(function (employees) {
-      var parsedEmployees = helperFuncs.parseEmployees(employees)
+      let parsedEmployees = helperFuncs.parseEmployees(employees)
       res.json(parsedEmployees);
     })
 });
@@ -51,27 +51,35 @@ router.route("/employeesDB").get( function (req, res) {
 // POST route for adding new employee
 router.route("/newEmployee").post( function (req, res) {
   console.log(req.body);
-  db.employee.create({
-    // entered by user
-    FirstName: req.body.FirstName,
-    LastName: req.body.LastName,
-    StartDate: req.body.startdate,
-    DOB: req.body.birthdate,
-    CertType: req.body.cerifytype,
-    CertExpDate: req.body.cerifydate,
-    Email: req.body.email,
-    Phone: req.body.phone,
-    Password: req.body.password,
+  // res.json(req.body);
+  let addr = helperFuncs.parseAddress(req.body.address)
+  // let addr = "abc"
+  res.json(addr);
+  // db.employee.create({
+  //   // entered by user
+  //   FirstName: req.body.firstname,
+  //   LastName: req.body.lastname,
+  //   StartDate: req.body.startdate,
+  //   DOB: req.body.birthdate,
+  //   CertType: req.body.cerifytype,
+  //   CertExpDate: req.body.cerifydate,
+  //   Email: req.body.email,
+  //   Phone: req.body.phone,
+  //   Password: req.body.password,
 
-    // default values
-    Startdate: now(),
-    MaxHours:20,
-    Wage:15
+  //   // default values
+  //   Startdate: now(),
+  //   MaxHours:20,
+  //   Wage:15
+  //   businessBusinessID: 1
 
-  })
-    .then(function(dbEmployee) {
-      res.json(dbEmployee);
-    });
+  // Need to set the same as employeeID
+  //   addressAddressID:
+
+  // })
+  //   .then(function(dbEmployee) {
+  //     res.json(dbEmployee);
+  //   });
 });
 
 
