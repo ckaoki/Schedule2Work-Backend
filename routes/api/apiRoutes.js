@@ -9,7 +9,7 @@ const saltRounds = 10;
 
 // TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
 // Search for employee by id
-router.route("/employeeDB/:id").get( function (req, res) {
+router.route("/employee2/:id").get( function (req, res) {
 
   let employeeID = req.params.id.trim();
   db.employee.findByPk(employeeID,
@@ -31,7 +31,7 @@ router.route("/employeeDB/:id").get( function (req, res) {
     })
 });
 
-router.route("/employeesDB").get( function (req, res) {
+router.route("/employees2").get( function (req, res) {
   db.employee.findAll(
     {include: [{
       model: db.role,
@@ -126,7 +126,7 @@ router.route("/login/").get( function (req, res) {
       bcrypt.compare(req.body.password, employee.Password, function (err, result) {
         if (result === true) {
           // res.redirect('/home');
-          res.send(employee.Password);
+          res.send('Correct password');
         }
         else {
           res.send('Incorrect password');
