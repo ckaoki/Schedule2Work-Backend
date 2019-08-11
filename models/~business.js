@@ -42,12 +42,12 @@ module.exports = function(sequelize, DataTypes) {
 //     as: 'address',
 //     onDelete: 'cascade'
 //   });
-//   //Business.hasOne(models.scheduleReq);
-//   Business.belongsToMany(models.schedule,{
-//     through: 'ScheduleID',
-//     as: 'schedule',
-//     onDelete: 'cascade'
-//   });
+  //Business.hasOne(models.scheduleReq);
+  // Business.belongsToMany(models.schedule,{
+  //   through: 'ScheduleID',
+  //   as: 'schedule',
+  //   onDelete: 'cascade'
+  // });
 //   Business.belongsToMany(models.shift,{
 //     through: 'ShiftID',
 //     as: 'shift',
