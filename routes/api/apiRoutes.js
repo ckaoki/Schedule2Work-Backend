@@ -142,7 +142,7 @@ router.route("/login/").get( function (req, res) {
     }
   ).then(function (employee) {
     if (!employee) {
-      //  res.redirect('/');
+      //  res.redirect('/');foundRole.RoleID
       res.send('Employee not found!')
     } 
     else {
