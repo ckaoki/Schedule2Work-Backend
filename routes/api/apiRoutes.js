@@ -10,7 +10,6 @@ const saltRounds = 10;
 // TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
 // Search for employee by id
 router.route("/employee2/:id").get( function (req, res) {
-
   let employeeID = req.params.id.trim();
   db.employee.findByPk(employeeID,
     {include: [{
@@ -52,7 +51,7 @@ router.route("/employees2").get( function (req, res) {
 });
 
 // POST route for adding new employee
-router.route("/newEmployee").post( function (req, res)  {
+router.route("/newEmployee").post( function (req, res) {
   let date = new Date();
   let yyyy = date.getFullYear();
   let dd = String(date.getDate()).padStart(2, '0');
@@ -60,8 +59,8 @@ router.route("/newEmployee").post( function (req, res)  {
   let today = yyyy +'-'+ mm +'-'+ dd;
 
   // check if email already exists
-  db.employee.findOne({
-    where:{Email:req.body.email}})
+  db.employee.findOne(
+    {where:{Email:req.body.email}})
   .then(function(employee){
     if(employee){
       return res.status(400).send("Email already in use.");
@@ -69,13 +68,11 @@ router.route("/newEmployee").post( function (req, res)  {
     else{
       // parse address string and create json
       let address = helperFuncs.parseAddress(req.body.address);
-      db.address.create(address)
+      // create address record first so can get ID to place in employee.
+      db.address.create(address)      
       .then(function(dbAddress){
         let addressID = dbAddress.AddressID;
-        // parse roles from csv string
-        let rolesArray = csv.parse(req.body.roles)[0];
-        console.log(rolesArray);
-          // hash password
+         // hash password
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
           // create employee
           db.employee.create({
@@ -98,17 +95,43 @@ router.route("/newEmployee").post( function (req, res)  {
             businessBusinessID: 1 
           })
           .then(function(dbEmployee) {
+            // parse roles from csv string
+            let parsedArray = csv.parse(req.body.roles)[0];
+            let rolesArray = []; 
+            parsedArray.forEach((role)=>{rolesArray.push(role.trim())})
+            console.log(rolesArray);
+            rolesArray.forEach((role)=>{
+              db.role.findOne({where: {RoleName:role}})
+              .then(function(foundRole){
+                if(foundRole){
+                  db.employee_roles.create(
+                    { EmployeeID: dbEmployee.EmployeeID,
+                      RoleID: foundRole.RoleID,
+                      ProficiencyLevel: 'novice'
+                    }
+                  )
+                  .then(function(){
+                    
+                  }
+                  )
+                }
+                else{
+                  console.log("Could not find role.");
+                }
+              })
+            });
             res.status(200).json(dbEmployee);
           })
           .catch(function(err){
             console.log(err);
-            res.status(400).send("Could not create new employee.");
-          })
+            return res.status(400).send("Could not create new employee.");
+          });
         });
       });
     };
-  });  
-});
+  });
+});  
+
 
 
 
@@ -119,7 +142,7 @@ router.route("/login/").get( function (req, res) {
     }
   ).then(function (employee) {
     if (!employee) {
-      //  res.redirect('/');
+      //  res.redirect('/');foundRole.RoleID
       res.send('Employee not found!')
     } 
     else {
