@@ -111,7 +111,7 @@ router.route("/newEmployee").post( function (req, res) {
                     }
                   )
                   .then(function(){
-                    console.log('Could not add role ' + foundRole.RoleID + ':' + role + 'to employee');
+                    
                   }
                   )
                 }
