@@ -64,7 +64,8 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false,
         len:[2, 10]
-      }
+      },
+ 
     },
     );
 
@@ -83,7 +84,10 @@ module.exports = function(sequelize, DataTypes) {
     // one-to-many relationships
     // line 73 should be many-one relationships. employee to business is an N-1 relationship. Many employees have one buiness.MH
       Employee.belongsTo(models.business);
-      Employee.belongsTo(models.address);
+      Employee.belongsTo(models.address,{
+        onDelete: 'cascade',
+        hooks: true, 
+      });
     //shift has a 1-N relationship with the employee table. MH
       //Employee.hasMany(models.shift)
       // address has a 1-1 relationship with employee.MH

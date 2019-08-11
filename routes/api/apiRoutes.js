@@ -7,9 +7,46 @@ const csv = require("csv-string");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-// TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
-// Search for employee by id
-router.route("/employee2/:id").get( function (req, res) {
+// Login route
+router.route("/login/").post( function (req, res) {
+  console.log(req.body.email);
+  console.log(req.body.password);
+  authenticateUser(req.body.email, req.body.password)
+  .then(function(resp){
+    res.send(resp)
+  })
+  .catch(function(err){
+    console.log(err);
+    res.send(err);
+  });
+
+  // db.employee.findOne({
+  //   where: {Email:req.body.email}
+  //   }
+  // ).then(function (employee) {
+  //   if (!employee) {
+  //     //return res.redirect('https://www.google.com/');
+  //     console.log('found Employee');
+  //     return res.send('Employee not found!');
+  //   } 
+  //   else {
+  //     bcrypt.compare(req.body.password, employee.Password, function (err, result) {
+  //       if (result === true) {
+  //         //return res.redirect('/home');
+  //         console.log('Employee logged in!');
+  //         return res.send('Employee logged in!');
+  //       }
+  //       else {
+  //         console.log('Incorrect password');
+  //         return res.send('Incorrect password');
+  //       }
+  //     });
+  //   }
+  // });
+});
+
+// Get employee by id
+router.route("/employee/:id").get( function (req, res) {
   let employeeID = req.params.id.trim();
   db.employee.findByPk(employeeID,
     {include: [{
@@ -26,11 +63,12 @@ router.route("/employee2/:id").get( function (req, res) {
     ]}
   ).then(function (employee) {
       let parsedEmployee = helperFuncs.parseEmployee(employee)
-      res.json(parsedEmployee);
+      return res.json(parsedEmployee);
     })
 });
 
-router.route("/employees2").get( function (req, res) {
+// Get all employees
+router.route("/employees").get( function (req, res) {
   db.employee.findAll(
     {include: [{
       model: db.role,
@@ -46,9 +84,10 @@ router.route("/employees2").get( function (req, res) {
     ]}
   ).then(function (employees) {
       let parsedEmployees = helperFuncs.parseEmployees(employees)
-      res.json(parsedEmployees);
+      return res.json(parsedEmployees);
     })
 });
+
 
 // POST route for adding new employee
 router.route("/newEmployee").post( function (req, res) {
@@ -63,7 +102,7 @@ router.route("/newEmployee").post( function (req, res) {
     {where:{Email:req.body.email}})
   .then(function(employee){
     if(employee){
-      return res.status(400).send("Email already in use.");
+      return res.send("Email already in use.",400);
     }
     else{
       // parse address string and create json
@@ -120,45 +159,76 @@ router.route("/newEmployee").post( function (req, res) {
                 }
               })
             });
-            res.status(200).json(dbEmployee);
+            res.json(dbEmployee,200);
           })
           .catch(function(err){
             console.log(err);
-            return res.status(400).send("Could not create new employee.");
+            res.send("Could not create new employee.", 400);
           });
         });
+      })
+      .then(function(res){
+        console.log(`address created`);
+      })
+      .catch(function(err){
+        res.send("Could not create new address or employee.", 400);
       });
     };
   });
 });  
 
-
-
-
-// TODO: Delete this route if not used
-router.route("/login/").get( function (req, res) {
-  db.employee.findOne({
-    where: {Email:req.body.email}
+// Delete employee
+router.route("/deleteemployee/:id").delete( function (req, res) {
+  console.log(`id: ${req.params.id}`)
+  db.employee.destroy({
+    where: ({EmployeeID: req.params.id})
+  })
+  .then(function(data) {
+    console.log(`Deleted ${data}`)
+    if (data=== 0){
+      res.send(`Could not delete employee id: ${req.params.id}`, 400);
     }
-  ).then(function (employee) {
-    if (!employee) {
-      //  res.redirect('/');foundRole.RoleID
-      res.send('Employee not found!')
-    } 
-    else {
-      bcrypt.compare(req.body.password, employee.Password, function (err, result) {
-        if (result === true) {
-          // res.redirect('/home');
-          res.send('Correct password');
-        }
-        else {
-          res.send('Incorrect password');
-          // res.redirect('/');
-        }
-      });
+    else{
+      
+      res.send(`Deleted employee: ${req.params.id}`, 200);
     }
+  })
+  .catch(function(err){ 
+    console.log(err);
+    res.send(err, 400);
   });
 });
+
+
+
+// Authenticate user
+const authenticateUser = function(email, password){
+  return new Promise(function(resolve, reject){
+    db.employee.findOne({
+      where: {email}
+    }
+    ).then(function (employee) {
+      if (!employee) {
+        reject({authenticated: false, message:'Employee not found.'});
+      } 
+      else {
+        bcrypt.compare(password, employee.Password, (err, res) => {
+          if(err){
+            console.log(err);
+            reject({authenticated:false, message:err.message});
+          }          
+          if (res === true) {
+            resolve ({authenticated:true, message:'Employee authenticated.'});
+          }
+          else {
+            reject ({authenticated:false, message:'Incorrect password'});
+          }
+        });
+      };
+    });
+  });
+};
+
 
 
 // *************************************************************************************************************
@@ -168,13 +238,13 @@ var tempData2 = require("./javascript/tempData2.js");
 var apiFakerRoute = require("./javascript/apiFakerRoute.js");
 
 // TODO: delete this temporary route.
-router.route("/employee/:id").get( function (req, res) {
+router.route("/employee1/:id").get( function (req, res) {
   var employeeID = req.params.id.trim();
   res.json(tempData1.employees[employeeID]);
 });
 
 // TODO: delete this temporary route.
-router.route("/employees").get( function (req, res) {  
+router.route("/employees1").get( function (req, res) {  
   res.json(tempData1.employees);
 });
 
