@@ -129,24 +129,26 @@ for (let i=1; i<30; i++){
 //Workng-Employee_roles Table
 let employeeCount = 30;
 for (let i = 1; i < employeeCount + 1; i++) {
+
   //const randomRole = faker.random.number({min: 1, max: 3});
   db.employee_roles.create({
-        
+    
     ProficiencyLevel: faker.random.arrayElement(
       ["inexperienced", "novice", "competent"]),   
-    EmployeeID: i,
-    RoleID: faker.random.number({min: 1,max: 3})
-  })
-}
+      EmployeeID: i,
+      RoleID: faker.random.number({min: 1,max: 3})
+    })
+};
 
 
 
   //Working-Shift-Role Join Table
 
-  for (let i = 1; i < 50; i++) {
+  for (let i = 1; i < 40; i++) {
     db.shift_roles.create({         
         // ShiftRoleID: i,   
         ShiftID: i,
         RoleID: faker.random.number({min: 1,max: 3})
     })
   }
+
