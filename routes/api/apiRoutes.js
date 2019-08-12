@@ -13,11 +13,11 @@ router.route("/login/").post( function (req, res) {
   console.log(req.body.password);
   authenticateUser(req.body.email, req.body.password)
   .then(function(resp){
-    res.send(resp)
+    res.status(200).send(resp)
   })
   .catch(function(err){
     console.log(err);
-    res.send(err);
+    res.status(400).send(err);
   });
 
   // db.employee.findOne({
@@ -102,7 +102,7 @@ router.route("/newEmployee").post( function (req, res) {
     {where:{Email:req.body.email}})
   .then(function(employee){
     if(employee){
-      return res.send("Email already in use.",400);
+      return res.status(400).send("Email already in use.");
     }
     else{
       // parse address string and create json
@@ -159,11 +159,11 @@ router.route("/newEmployee").post( function (req, res) {
                 }
               })
             });
-            res.json(dbEmployee,200);
+            res.status(400).json(dbEmployee);
           })
           .catch(function(err){
             console.log(err);
-            res.send("Could not create new employee.", 400);
+            res.status(400).send("Could not create new employee.");
           });
         });
       })
@@ -171,7 +171,7 @@ router.route("/newEmployee").post( function (req, res) {
         console.log(`address created`);
       })
       .catch(function(err){
-        res.send("Could not create new address or employee.", 400);
+        res.status(400).send("Could not create new address or employee.");
       });
     };
   });
@@ -179,24 +179,42 @@ router.route("/newEmployee").post( function (req, res) {
 
 // Delete employee
 router.route("/deleteemployee/:id").delete( function (req, res) {
-  console.log(`id: ${req.params.id}`)
-  db.employee.destroy({
-    where: ({EmployeeID: req.params.id})
-  })
-  .then(function(data) {
-    console.log(`Deleted ${data}`)
-    if (data=== 0){
-      res.send(`Could not delete employee id: ${req.params.id}`, 400);
-    }
-    else{
-      
-      res.send(`Deleted employee: ${req.params.id}`, 200);
-    }
+  db.employee.findByPk(req.params.id)
+  .then(function(emplData){
+    db.employee.destroy({
+      where: {EmployeeID: req.params.id}})
+    .then(function(numDeleted) {
+       if (numDeleted === 0){
+        res.status(400).send(`Could not delete employee id: ${req.params.id}`);
+      }
+      else{
+        db.address.destroy({
+          where: {AddressID: emplData.addressAddressID}})
+        .then(function(addrData) {
+          db.employee_roles.destroy({
+            where: {EmployeeID: req.params.id}
+          })
+          .then(function(numEmplRoles){
+            res.status(200).send(`Deleted employee: ${req.params.id}`);
+          })
+          .catch(function(err){ 
+            console.log(err);
+            res.status(400).send(err);
+          });
+        });
+      };
+    })
+    .catch(function(err){ 
+      console.log(err);
+      res.status(400).send(err);
+    });
   })
   .catch(function(err){ 
     console.log(err);
-    res.send(err, 400);
+    res.status(400).send(err);
   });
+
+  
 });
 
 
