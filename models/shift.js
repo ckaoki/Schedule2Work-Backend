@@ -35,8 +35,9 @@ module.exports = function(sequelize, DataTypes) {
     Shift.belongsToMany(models.role, {
       through: 'shift_roles',
       as: 'role',
-      foreignKey: 'ShiftID',
-      onDelete: 'cascade'
+      foreignKey: 'ShiftID'
+      //commenting out the onDelete as it is keeping the data from loading. "Cannot add or update a child row: a foreigh key constraint fails"
+      //onDelete: 'cascade'
     });
   }   
 

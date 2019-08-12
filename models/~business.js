@@ -20,15 +20,39 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
-//In order to connect the tables associated with Business, I adding the following code(MH):
+//In order to connect the tables associated with Business, I adding the following code(MH): uncommenting code from lines 24-32
 // Business.associate = function(models){
-  // Business.belongsToMany(models.employee);
-  // Business.belongsToMany(models.role);
-  // Business.belongsToMany(models.group);
-  // Business.belongsToMany(models.address);
-  // Business.hasOne(models.scheduleReq);
-  // Business.belongsToMany(models.schedule);
-  // Business.belongsToMany(models.shift);
+//   Business.belongsToMany(models.employee,{
+//     through: 'EmployeeID',
+//     as: 'employee',
+//     onDelete: 'cascade'
+//   });
+//   Business.belongsToMany(models.role,{
+//     through: 'RoleID',
+//     as: 'role',
+//     onDelete: 'cascade'
+//   });
+//   Business.belongsToMany(models.group,{
+//     through: 'GroupID',
+//     as: 'group',
+//     onDelete: 'cascade'
+//   });
+//   Business.belongsToMany(models.address,{
+//     through: 'AddressID',
+//     as: 'address',
+//     onDelete: 'cascade'
+//   });
+  //Business.hasOne(models.scheduleReq);
+  // Business.belongsToMany(models.schedule,{
+  //   through: 'ScheduleID',
+  //   as: 'schedule',
+  //   onDelete: 'cascade'
+  // });
+//   Business.belongsToMany(models.shift,{
+//     through: 'ShiftID',
+//     as: 'shift',
+//     onDelete: 'cascade'
+//   });
 // }
 
   return Business;
