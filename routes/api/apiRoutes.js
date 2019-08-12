@@ -245,7 +245,7 @@ const authenticateUser = function(email, password){
   });
 };
 
-router.route("/newshift").post( function (req, res) {
+router.route("/addshift").post( function (req, res) {
   db.shift.create({
     Date: req.body.date,
     StartTime: req.body.starttime,
@@ -266,6 +266,14 @@ router.route("/newshift").post( function (req, res) {
   })
 
 });
+
+router.route("/today").get(function(req, res){
+  let date = new Date();
+  date.setDate(date.getDate() + 1);
+  let today =  date.getFullYear() +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+  String(date.getDate()).padStart(2, '0');
+  console.log(today);
+  res.send(today);
+})
 
 
 // Get all shifts for current week
