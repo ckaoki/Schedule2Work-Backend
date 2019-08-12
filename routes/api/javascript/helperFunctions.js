@@ -15,6 +15,7 @@ module.exports = {
     parsedRoles = parsedRoles.slice(0,parsedRoles.length - 2);   
    
     parsedEmployee = {
+      id: empl.EmployeeID,
       FirstName: empl.FirstName,
       LastName: empl.LastName,
       Address: parsedAddr,

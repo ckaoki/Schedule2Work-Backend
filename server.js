@@ -13,6 +13,7 @@ var app = express();
 app.use(cors());
 var PORT = process.env.PORT || 8080;
 
+
 // Requiring our models for syncing
 var db = require("./models");
 const routes = require("./routes");

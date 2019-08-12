@@ -7,9 +7,46 @@ const csv = require("csv-string");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-// TODO: This route will be used. Need to remove '2' in route path when temp route deleted.
-// Search for employee by id
-router.route("/employee2/:id").get( function (req, res) {
+// Login route
+router.route("/login/").post( function (req, res) {
+  console.log(req.body.email);
+  console.log(req.body.password);
+  authenticateUser(req.body.email, req.body.password)
+  .then(function(resp){
+    res.status(200).send(resp)
+  })
+  .catch(function(err){
+    console.log(err);
+    res.status(400).send(err);
+  });
+
+  // db.employee.findOne({
+  //   where: {Email:req.body.email}
+  //   }
+  // ).then(function (employee) {
+  //   if (!employee) {
+  //     //return res.redirect('https://www.google.com/');
+  //     console.log('found Employee');
+  //     return res.send('Employee not found!');
+  //   } 
+  //   else {
+  //     bcrypt.compare(req.body.password, employee.Password, function (err, result) {
+  //       if (result === true) {
+  //         //return res.redirect('/home');
+  //         console.log('Employee logged in!');
+  //         return res.send('Employee logged in!');
+  //       }
+  //       else {
+  //         console.log('Incorrect password');
+  //         return res.send('Incorrect password');
+  //       }
+  //     });
+  //   }
+  // });
+});
+
+// Get employee by id
+router.route("/employee/:id").get( function (req, res) {
   let employeeID = req.params.id.trim();
   db.employee.findByPk(employeeID,
     {include: [{
@@ -26,11 +63,12 @@ router.route("/employee2/:id").get( function (req, res) {
     ]}
   ).then(function (employee) {
       let parsedEmployee = helperFuncs.parseEmployee(employee)
-      res.json(parsedEmployee);
+      return res.json(parsedEmployee);
     })
 });
 
-router.route("/employees2").get( function (req, res) {
+// Get all employees
+router.route("/employees").get( function (req, res) {
   db.employee.findAll(
     {include: [{
       model: db.role,
@@ -46,9 +84,10 @@ router.route("/employees2").get( function (req, res) {
     ]}
   ).then(function (employees) {
       let parsedEmployees = helperFuncs.parseEmployees(employees)
-      res.json(parsedEmployees);
+      return res.json(parsedEmployees);
     })
 });
+
 
 // POST route for adding new employee
 router.route("/newEmployee").post( function (req, res) {
@@ -120,44 +159,146 @@ router.route("/newEmployee").post( function (req, res) {
                 }
               })
             });
-            res.status(200).json(dbEmployee);
+            res.status(400).json(dbEmployee);
           })
           .catch(function(err){
             console.log(err);
-            return res.status(400).send("Could not create new employee.");
+            res.status(400).send("Could not create new employee.");
           });
         });
+      })
+      .then(function(res){
+        console.log(`address created`);
+      })
+      .catch(function(err){
+        res.status(400).send("Could not create new address or employee.");
       });
     };
   });
 });  
 
+// Delete employee
+router.route("/deleteemployee/:id").delete( function (req, res) {
+  db.employee.findByPk(req.params.id)
+  .then(function(emplData){
+    db.employee.destroy({
+      where: {EmployeeID: req.params.id}})
+    .then(function(numDeleted) {
+       if (numDeleted === 0){
+        res.status(400).send(`Could not delete employee id: ${req.params.id}`);
+      }
+      else{
+        db.address.destroy({
+          where: {AddressID: emplData.addressAddressID}})
+        .then(function(addrData) {
+          db.employee_roles.destroy({
+            where: {EmployeeID: req.params.id}
+          })
+          .then(function(numEmplRoles){
+            res.status(200).send(`Deleted employee: ${req.params.id}`);
+          })
+          .catch(function(err){ 
+            console.log(err);
+            res.status(400).send(err);
+          });
+        });
+      };
+    })
+    .catch(function(err){ 
+      console.log(err);
+      res.status(400).send(err);
+    });
+  })
+  .catch(function(err){ 
+    console.log(err);
+    res.status(400).send(err);
+  });  
+});
 
 
 
-// TODO: Delete this route if not used
-router.route("/login/").get( function (req, res) {
-  db.employee.findOne({
-    where: {Email:req.body.email}
+// Authenticate user
+const authenticateUser = function(email, password){
+  return new Promise(function(resolve, reject){
+    db.employee.findOne({
+      where: {email}
     }
-  ).then(function (employee) {
-    if (!employee) {
-      //  res.redirect('/');foundRole.RoleID
-      res.send('Employee not found!')
-    } 
-    else {
-      bcrypt.compare(req.body.password, employee.Password, function (err, result) {
-        if (result === true) {
-          // res.redirect('/home');
-          res.send('Correct password');
-        }
-        else {
-          res.send('Incorrect password');
-          // res.redirect('/');
-        }
-      });
-    }
+    ).then(function (employee) {
+      if (!employee) {
+        reject({authenticated: false, message:'Employee not found.'});
+      } 
+      else {
+        bcrypt.compare(password, employee.Password, (err, res) => {
+          if(err){
+            console.log(err);
+            reject({authenticated:false, message:err.message});
+          }          
+          if (res === true) {
+            resolve ({authenticated:true, message:'Employee authenticated.'});
+          }
+          else {
+            reject ({authenticated:false, message:'Incorrect password'});
+          }
+        });
+      };
+    });
   });
+};
+
+router.route("/addshift").post( function (req, res) {
+  db.shift.create({
+    Date: req.body.date,
+    StartTime: req.body.starttime,
+    EndTime: req.body.endtime,
+    employeeEmployeeID: req.body.id,
+
+    // not entered by user
+    ClockInTime: 0,
+    ClockOutTime: 0,
+    businessBusinessID: 1
+  })
+  .then(function(shift){
+    res.status(200).send(`added shift: ${shift}`)
+  })
+  .catch(function(err){ 
+    console.log(err);
+    res.status(400).send(err);
+  })
+
+});
+
+router.route("/today").get(function(req, res){
+  let date = new Date();
+  date.setDate(date.getDate() + 1);
+  let today =  date.getFullYear() +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+  String(date.getDate()).padStart(2, '0');
+  console.log(today);
+  res.send(today);
+})
+
+
+// Get all shifts for current week
+router.route("/thisweeksshifts").get( function (req, res) {
+  // Get current week start date.
+  // Get all shifts for first day and create object and push into array.
+  // Loop through all 7 days in week.
+  // return array of 7 days of shifts.
+  db.employee.findAll(
+    {include: [{
+      model: db.role,
+      as: 'role',
+      attributes: ['roleid', 'RoleName'],
+      through: {
+        model: db.employee_roles
+      }},
+      {
+        model:db.address,
+        as: 'address'
+      }
+    ]}
+  ).then(function (employees) {
+      let parsedEmployees = helperFuncs.parseEmployees(employees)
+      return res.json(parsedEmployees);
+    })
 });
 
 
@@ -168,13 +309,13 @@ var tempData2 = require("./javascript/tempData2.js");
 var apiFakerRoute = require("./javascript/apiFakerRoute.js");
 
 // TODO: delete this temporary route.
-router.route("/employee/:id").get( function (req, res) {
+router.route("/employee1/:id").get( function (req, res) {
   var employeeID = req.params.id.trim();
   res.json(tempData1.employees[employeeID]);
 });
 
 // TODO: delete this temporary route.
-router.route("/employees").get( function (req, res) {  
+router.route("/employees1").get( function (req, res) {  
   res.json(tempData1.employees);
 });
 

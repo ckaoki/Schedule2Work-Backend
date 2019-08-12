@@ -7,18 +7,18 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     StartTime:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.TIME,
       allowNull:false
     },
     EndTime:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.TIME,
       allowNull: false
     },
     ClockInTime:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.TIME,
     },
     ClockOutTime:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.TIME,
     },
     Date:{
       type: DataTypes.DATEONLY,
