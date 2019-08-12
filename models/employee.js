@@ -1,59 +1,115 @@
 // Model for employee
+var bcrypt = require('bcrypt');
+
 module.exports = function(sequelize, DataTypes) {
-    var Employee = sequelize.define("Employee", {
-      id: {
+    var Employee = sequelize.define("employee", {
+      EmployeeID: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
-      first_name: {
+      FirstName: {
         type: DataTypes.STRING,
         allowNull: false
       }, 
-      last_name: {
+      LastName: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      birthdate: {
+      DOB: {
         type: DataTypes.DATEONLY,
         allowNull: false
       },
-      startdate: {
+      Startdate: {
         type: DataTypes.DATEONLY,
         allowNull: false
       },
-      email: {
+      Email: {
         type: DataTypes.STRING,
-        defaultValue: ""
+        unique: true,
+        allowNull: false,        
+        validate: {
+          len: {
+              args: [6, 128],
+              msg: "Email address must be between 6 and 128 characters in length"
+          },
+          isEmail: {
+              msg: "Email address must be valid"
+          }
+        }
       },
-      phone: {
-        type: DataTypes.INTEGER,
+      Phone: {
+        type: DataTypes.STRING,
         allowNull: false
       },
-      minimum_hours: {
+      MinHours: {
         type: DataTypes.INTEGER,
         defaultValue: 0
       },
-      maximum_hours: {
+      MaxHours: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      food_certification_expiration_date: {
+      Wage: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+      },
+      CertExpDate: {
         type: DataTypes.DATEONLY
-      }
-    });
+      },
+      CertType: {
+        type: DataTypes.TEXT
+      },
+      Password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        len:[2, 10]
+      },
+ 
+    },
+    );
+
+    //generate a hash for password with bcrypt
+    Employee.generateHash = function (Password) {
+    return bcrypt.hashSync(Password, bcrypt.genSaltSync(8), null);
+    };
+
+    //check if password is valid
+    Employee.prototype.validatePassword = function (Password) {
+      return bcrypt.compareSync(Password, this.localPassword);
+    };
   
-    Employee.associate = function(models) {
-      Employee.belongsToMany(models.Role, {
+
+    Employee.associate = function(models) {  
+    // one-to-many relationships
+    // line 73 should be many-one relationships. employee to business is an N-1 relationship. Many employees have one buiness.MH
+      Employee.belongsTo(models.business);
+      Employee.belongsTo(models.address,{
+        onDelete: 'cascade',
+        hooks: true, 
+      });
+    //shift has a 1-N relationship with the employee table. MH
+      //Employee.hasMany(models.shift)
+      // address has a 1-1 relationship with employee.MH
+      // Employee.hasOne(models.address)
+  
+    // many-to-many relationships  
+      Employee.belongsToMany(models.role, {
         through: 'employee_roles',
-        as: 'roles',
-        foreignKey: 'employee_id',
+        as: 'role',
+        foreignKey: 'EmployeeID',
         onDelete: 'cascade'
       });
+      Employee.belongsToMany(models.employee_group, {
+        through: 'employee_groups',
+        as: 'group',
+        foreignKey: 'EmployeeID',
+        onDelete: 'cascade'
+      });
+
     };  
   
     return Employee;
   };
-  
   
   

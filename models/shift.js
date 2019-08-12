@@ -1,62 +1,45 @@
 // Model for shift
 module.exports = function(sequelize, DataTypes) {
-  var Shift = sequelize.define("Shift", {
-    id: {
+  var Shift = sequelize.define("shift", {
+    ShiftID: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },
-    name: {
-      type: DataTypes.STRING,
-      unique: true
-    },
-    begin_time:{
-      type: DataTypes.INTEGER,
+    StartTime:{
+      type: DataTypes.TIME,
       allowNull:false
     },
-    end_time:{
-      type: DataTypes.INTEGER,
+    EndTime:{
+      type: DataTypes.TIME,
       allowNull: false
     },
-    monday:{
-      type: DataTypes.INTEGER,
-      defaultValue:0
+    ClockInTime:{
+      type: DataTypes.TIME,
     },
-    tuesday:{
-      type: DataTypes.INTEGER,
-      defaultValue:0
+    ClockOutTime:{
+      type: DataTypes.TIME,
     },
-    wednesday:{
-      type: DataTypes.INTEGER,
-      defaultValue:0
-    },
-    thursday:{
-      type: DataTypes.INTEGER,
-      defaultValue:0
-    },
-    friday:{
-      type: DataTypes.INTEGER,
-      defaultValue:0
-    },
-    saturday:{
-      type: DataTypes.INTEGER,
-      defaultValue:0
-    },
-    sunday:{
-      type: DataTypes.INTEGER,
-      defaultValue:0
-    },
+    Date:{
+      type: DataTypes.DATEONLY,
+      allowNull: false
+    }
+
   });
 
-  // TODO: associate with schedule
-  // Shift.associate = function(models) {
-  //   Shift.belongsToMany(models.Employee, {
-  //     through: "employee_roles",
-  //     as: 'employees',
-  //     foreignKey: 'role_id',
-  //     onDelete: "cascade"
-  //   });
-  // };  
+  Shift.associate = function(models) { 
+    Shift.belongsTo(models.business);
+    Shift.belongsTo(models.employee);
+    Shift.hasOne(models.schedule);
+      // many-to-many relationships 
+    Shift.belongsToMany(models.role, {
+      through: 'shift_roles',
+      as: 'role',
+      foreignKey: 'ShiftID'
+      //commenting out the onDelete as it is keeping the data from loading. "Cannot add or update a child row: a foreigh key constraint fails"
+      //onDelete: 'cascade'
+    });
+  }   
 
   return Shift;
 };

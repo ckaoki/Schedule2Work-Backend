@@ -5,11 +5,14 @@
 // *** Dependencies
 // =============================================================
 var express = require("express");
+var cors = require("cors");
 
 // Sets up the Express App
 // =============================================================
 var app = express();
+app.use(cors());
 var PORT = process.env.PORT || 8080;
+
 
 // Requiring our models for syncing
 var db = require("./models");
@@ -25,7 +28,7 @@ app.use(express.static("public"));
 // Routes
 // =============================================================
 app.use(routes);
-
+ //var syncvar = {force:false}
 // Syncing our sequelize models and then starting our Express app
 // Include {force:true} in sync() if we want to clear database
 // =============================================================
