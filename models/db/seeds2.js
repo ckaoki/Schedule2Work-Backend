@@ -7,12 +7,10 @@ const db = require('../../models')
 // var saltRounds = 10;
 
 //Working-Shift Table Currently date is only building for today's date
-for (let i=1; i<30; i++){
-  
-  switch (i){
-    case 1:
+for (let i=1; i<14; i++){
+ 
       db.shift.create({
-        Date: new Date(),
+        Date: new Date(new Date().setDate(new Date().getDate() + i)),
         StartTime: 0830,
         EndTime: 1700,
         ClockInTime: 0830,
@@ -21,9 +19,8 @@ for (let i=1; i<30; i++){
        employeeEmployeeID: faker.random.number({min: 1,max: 30}),
       });
 
-    case 2:
         db.shift.create({
-          Date: new Date(),
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 0900,
           EndTime: 1630,
           ClockInTime: 0900,
@@ -33,9 +30,8 @@ for (let i=1; i<30; i++){
         });
    
 
-    case 3:
         db.shift.create({
-          Date: new Date(),
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 1000,
           EndTime: 1700,
           ClockInTime: 1000,
@@ -44,9 +40,9 @@ for (let i=1; i<30; i++){
           employeeEmployeeID: faker.random.number({min: 1,max: 30}),
         });
         
-    case 4:        
+       
         db.shift.create({
-          Date: new Date(),
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 1100,
           EndTime: 1400,
           ClockInTime: 1100,
@@ -55,9 +51,9 @@ for (let i=1; i<30; i++){
           employeeEmployeeID: faker.random.number({min: 1,max: 30})
         });
 
-    case 5:
+
         db.shift.create({
-          Date: new Date(),
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 1100,
           EndTime: 1730,
           ClockInTime: 1100,
@@ -66,9 +62,9 @@ for (let i=1; i<30; i++){
           employeeEmployeeID: faker.random.number({min: 1,max: 30})
         });
 
-    case 6:
+
         db.shift.create({
-          Date: new Date(),
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 1400,
           EndTime: 1700,
           ClockInTime: 1400,
@@ -77,9 +73,8 @@ for (let i=1; i<30; i++){
           employeeEmployeeID: faker.random.number({min: 1,max: 30})
         });
 
-    case 7:
         db.shift.create({
-          Date: new Date(),
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 1630,
           EndTime: 2030,
           ClockInTime: 1630,
@@ -88,9 +83,8 @@ for (let i=1; i<30; i++){
           employeeEmployeeID: faker.random.number({min: 1,max: 30})
         });
 
-    case 8:
-        db.shift.create({
-          Date: new Date(),
+       db.shift.create({
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 1700,
           EndTime: 2100,
           ClockInTime: 1700,
@@ -99,9 +93,8 @@ for (let i=1; i<30; i++){
           employeeEmployeeID: faker.random.number({min: 1,max: 30})
         });
 
-    case 9:
         db.shift.create({
-          Date: new Date(),
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 1730,
           EndTime: 2130,
           ClockInTime: 1730,
@@ -110,9 +103,8 @@ for (let i=1; i<30; i++){
           employeeEmployeeID: faker.random.number({min: 1,max: 30})
         });
 
-    case 10:
         db.shift.create({
-          Date: new Date(),
+          Date: new Date(new Date().setDate(new Date().getDate() + i)),
           StartTime: 1730,
           EndTime: 2200,
           ClockInTime: 1730,
@@ -120,8 +112,9 @@ for (let i=1; i<30; i++){
           businessBusinessID: 1,
           employeeEmployeeID: faker.random.number({min: 1,max: 30})
         });
-  }
-    
+
+      
+       
 }
 
 
@@ -142,7 +135,7 @@ for (let i = 1; i < employeeCount + 1; i++) {
 
 
 
-  //Working-Shift-Role Join Table
+//Working-Shift-Role Join Table
 
   for (let i = 1; i < 40; i++) {
     db.shift_roles.create({         
@@ -151,4 +144,5 @@ for (let i = 1; i < employeeCount + 1; i++) {
         RoleID: faker.random.number({min: 1,max: 3})
     })
   }
+  
 
