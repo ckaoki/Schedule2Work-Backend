@@ -212,9 +212,7 @@ router.route("/deleteemployee/:id").delete( function (req, res) {
   .catch(function(err){ 
     console.log(err);
     res.status(400).send(err);
-  });
-
-  
+  });  
 });
 
 
@@ -247,6 +245,53 @@ const authenticateUser = function(email, password){
   });
 };
 
+router.route("/newshift").post( function (req, res) {
+  db.shift.create({
+    Date: req.body.date,
+    StartTime: req.body.starttime,
+    EndTime: req.body.endtime,
+    employeeEmployeeID: req.body.id,
+
+    // not entered by user
+    ClockInTime: 0,
+    ClockOutTime: 0,
+    businessBusinessID: 1
+  })
+  .then(function(shift){
+    res.status(200).send(`added shift: ${shift}`)
+  })
+  .catch(function(err){ 
+    console.log(err);
+    res.status(400).send(err);
+  })
+
+});
+
+
+// Get all shifts for current week
+router.route("/thisweeksshifts").get( function (req, res) {
+  // Get current week start date.
+  // Get all shifts for first day and create object and push into array.
+  // Loop through all 7 days in week.
+  // return array of 7 days of shifts.
+  db.employee.findAll(
+    {include: [{
+      model: db.role,
+      as: 'role',
+      attributes: ['roleid', 'RoleName'],
+      through: {
+        model: db.employee_roles
+      }},
+      {
+        model:db.address,
+        as: 'address'
+      }
+    ]}
+  ).then(function (employees) {
+      let parsedEmployees = helperFuncs.parseEmployees(employees)
+      return res.json(parsedEmployees);
+    })
+});
 
 
 // *************************************************************************************************************
