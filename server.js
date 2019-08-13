@@ -28,7 +28,7 @@ app.use(express.static("public"));
 // Routes
 // =============================================================
 app.use(routes);
- //var syncvar = {force:false}
+// var syncvar = {force:false}
 // Syncing our sequelize models and then starting our Express app
 // Include {force:true} in sync() if we want to clear database
 // =============================================================

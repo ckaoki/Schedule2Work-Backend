@@ -2,6 +2,17 @@
 var parseAddress = require("parse-address");
 
 module.exports = {
+
+  // Parse an array of employee data
+  parseEmployees: function(employees){
+    let parsedEmployees =[];
+    employees.forEach(employee =>{
+      parsedEmployees.push(this.parseEmployee(employee));
+    });
+    return parsedEmployees;
+  },
+
+  // Parse employee data return by database query
   parseEmployee: function(employee){
     let empl = employee;
     let addr = employee.address;
@@ -31,14 +42,7 @@ module.exports = {
     return parsedEmployee;
   },
 
-  parseEmployees: function(employees){
-    let parsedEmployees =[];
-    employees.forEach(employee =>{
-      parsedEmployees.push(this.parseEmployee(employee));
-    });
-    return parsedEmployees;
-  },
-
+  // Parse addresss into its components
   parseAddress: function(address){
     let addrParts = parseAddress.parseLocation(address);  
     let Street ="";
@@ -61,6 +65,20 @@ module.exports = {
     return parsedAddr;
   },
 
+  // Parse array of shifts and add date field.
+  parseShifts: function(shifts){
+    let parsedShifts =[];
+    shifts.forEach(shift => {
+      parsedShifts.push(this.parseShift(shift));
+    })
+    let dayShifts = {
+      Date: shifts[0].Date,
+      Shifts: parsedShifts
+    }
+    return dayShifts;
+  },
+
+  // Parse a single shift returned by database query
   parseShift: function(shift){
     let parsedShift = {
         BusinessID: shift.businessBusinessID,
@@ -74,14 +92,5 @@ module.exports = {
         Phone: shift.employee.Phone
     };
     return parsedShift;
-  },
-
-  parseShifts: function(shifts){
-    let parsedShifts =[];
-    shifts.forEach(shift => {
-      parsedShifts.push(this.parseShift(shift));
-    })
-    return parsedShifts;
   }
-
 }
