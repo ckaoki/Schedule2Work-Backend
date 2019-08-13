@@ -81,7 +81,7 @@ router.route("/newEmployee").post( function (req, res) {
     {where:{Email:req.body.email}})
   .then(function(employee){
     if(employee){
-      return res.status(400).send("Email already in use.");
+      // return res.status(400).send("Email already in use.");
     }
     else{
       // parse address string and create json
@@ -139,7 +139,7 @@ router.route("/newEmployee").post( function (req, res) {
                 }
               })
             });
-            res.status(400).json(dbEmployee);
+            res.status(200).json(dbEmployee);
           })
           .catch(function(err){
             console.log(err);
