@@ -149,10 +149,11 @@ router.route("/newEmployee").post( function (req, res) {
                       ProficiencyLevel: 'novice'
                     }
                   )
-                  .then(function(){
-                    
-                  }
-                  )
+                  .then(function(){})
+                  .catch(function(err){
+                    console.log(err);
+                    res.status(400).send("Could not create new employee.");
+                  });
                 }
                 else{
                   console.log("Could not find role.");
@@ -279,104 +280,120 @@ router.route("/today").get(function(req, res){
 // Get all shifts for current week
 router.route("/thisweeksshifts").get( function (req, res) {
   // Get current week start date.
+  console.log("this week")
+  let date = new Date();
+  date.setDate(date.getDate() + 1); //TODO: remove +1
+  let today =  date.getFullYear() +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+  String(date.getDate()).padStart(2, '0');
   // Get all shifts for first day and create object and push into array.
   // Loop through all 7 days in week.
   // return array of 7 days of shifts.
-  db.employee.findAll(
+  db.shift.findAll(
     {include: [{
       model: db.role,
       as: 'role',
-      attributes: ['roleid', 'RoleName'],
+      attributes: [ 'RoleName'],
       through: {
-        model: db.employee_roles
-      }},
-      {
-        model:db.address,
-        as: 'address'
-      }
-    ]}
-  ).then(function (employees) {
-      let parsedEmployees = helperFuncs.parseEmployees(employees)
-      return res.json(parsedEmployees);
+        model: db.shift_roles,        
+      },
+    },
+      { 
+        model: db.employee,
+        attributes: ['FirstName', 'LastName', 'Phone'],
+         // This is not how we want to get role proficiency level.
+         // Just doing it this way because the data in our tables were seeded incorrectly
+         // and the employees may be assign shifts that require roles they are not assigned.
+        include:[{
+          model: db.role,
+          as: 'role',
+          attributes: ['RoleID', 'RoleName'],
+          through:{model: db.employee_roles,  attributes:['ProficiencyLevel']},
+         
+        }]
+      },    
+    ]} 
+  ).then(function (weekShifts) {
+      // return res.json(weekshifts);
+      let parsedShifts = helperFuncs.parseShifts(weekShifts);
+      return res.json(parsedShifts);
     })
 });
 
 
 // *************************************************************************************************************
-// TODO: Temporary routes for testing front end while building front end
-var tempData1 = require("./javascript/tempData1.js");
-var tempData2 = require("./javascript/tempData2.js");
-var apiFakerRoute = require("./javascript/apiFakerRoute.js");
+// // TODO: Temporary routes for testing front end while building front end
+// var tempData1 = require("./javascript/tempData1.js");
+// var tempData2 = require("./javascript/tempData2.js");
+// var apiFakerRoute = require("./javascript/apiFakerRoute.js");
 
-// TODO: delete this temporary route.
-router.route("/employee1/:id").get( function (req, res) {
-  var employeeID = req.params.id.trim();
-  res.json(tempData1.employees[employeeID]);
-});
+// // TODO: delete this temporary route.
+// router.route("/employee1/:id").get( function (req, res) {
+//   var employeeID = req.params.id.trim();
+//   res.json(tempData1.employees[employeeID]);
+// });
 
-// TODO: delete this temporary route.
-router.route("/employees1").get( function (req, res) {  
-  res.json(tempData1.employees);
-});
+// // TODO: delete this temporary route.
+// router.route("/employees1").get( function (req, res) {  
+//   res.json(tempData1.employees);
+// });
 
-// TODO: delete this temporary route.
-router.route("/thisweeksschedule").get( function (req, res) {  
-  console.log('week');
-  res.json(tempData2.weeklySchedule);
-});
+// // TODO: delete this temporary route.
+// router.route("/thisweeksschedule").get( function (req, res) {  
+//   console.log('week');
+//   res.json(tempData2.weeklySchedule);
+// });
 
-//Faker route
-router.route("/schedule").get( function (req, res) {
+// //Faker route
+// router.route("/schedule").get( function (req, res) {
  
-  res.json(apiFakerRoute.schedule);
+//   res.json(apiFakerRoute.schedule);
 
-});
+// });
 
 
-// TODO: delete this function if not needed
-// Search for employee by role
-router.route("/employee/:role").get( function (req, res) {console.log("Employee");
-  // Change string of ingredients to array
-  var role = req.params.role.trim();
-  console.log(role);
+// // TODO: delete this function if not needed
+// // Search for employee by role
+// router.route("/employee/:role").get( function (req, res) {console.log("Employee");
+//   // Change string of ingredients to array
+//   var role = req.params.role.trim();
+//   console.log(role);
 
-  db.employee.findAll({
-    include: [{
-      model: db.role,
-      as: 'role',
-      through: {
-        model: db.employeeroles
-      },
-      where: {
-        RoleName: role
-      }
-    }]
-  }).then(function (foundEmp) {
-        res.json(foundEmp);
-      });
-});
+//   db.employee.findAll({
+//     include: [{
+//       model: db.role,
+//       as: 'role',
+//       through: {
+//         model: db.employeeroles
+//       },
+//       where: {
+//         RoleName: role
+//       }
+//     }]
+//   }).then(function (foundEmp) {
+//         res.json(foundEmp);
+//       });
+// });
 
-// TODO: delete this function if not needed
-// Search for roles by employee
-router.route("/role/:firstName").get( function (req, res) {console.log("role");
-var firstName = req.params.firstName.trim();
-  db.role.findAll({
-    include: [{
-      model: db.employee,
-      as: 'employee',
-      // attributes: ['EmployeeID', 'FirstName'],
-      through: {
-        model: db.employeeroles
-      },
-      where: {
-        FirstName: firstName
-      }
-    }
-    ]
-  }).then(function (roles) {
-    res.json(roles);
-  })
-});
+// // TODO: delete this function if not needed
+// // Search for roles by employee
+// router.route("/role/:firstName").get( function (req, res) {console.log("role");
+// var firstName = req.params.firstName.trim();
+//   db.role.findAll({
+//     include: [{
+//       model: db.employee,
+//       as: 'employee',
+//       // attributes: ['EmployeeID', 'FirstName'],
+//       through: {
+//         model: db.employeeroles
+//       },
+//       where: {
+//         FirstName: firstName
+//       }
+//     }
+//     ]
+//   }).then(function (roles) {
+//     res.json(roles);
+//   })
+// });
 
 module.exports = router;
 

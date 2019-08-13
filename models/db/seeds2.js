@@ -5,9 +5,10 @@ var faker = require('faker');
 const db = require('../../models')
 // var bcrypt = require("bcrypt");
 // var saltRounds = 10;
+let shiftDays = 14; // This is used by Shifts Table and Shift_Roles Table.
 
 //Working-Shift Table Currently date is only building for today's date
-for (let i=1; i<14; i++){
+for (let i=1; i<=shiftDays; i++){
  
       db.shift.create({
         Date: new Date(new Date().setDate(new Date().getDate() + i)),
@@ -136,8 +137,8 @@ for (let i = 1; i < employeeCount + 1; i++) {
 
 
 //Working-Shift-Role Join Table
-
-  for (let i = 1; i < 40; i++) {
+//Need a record for each shift. 10 shifts per day.
+  for (let i = 1; i <= shiftDays*10; i++) {
     db.shift_roles.create({         
         // ShiftRoleID: i,   
         ShiftID: i,

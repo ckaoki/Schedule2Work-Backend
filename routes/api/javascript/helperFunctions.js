@@ -59,6 +59,29 @@ module.exports = {
     }
 
     return parsedAddr;
+  },
+
+  parseShift: function(shift){
+    let parsedShift = {
+        BusinessID: shift.businessBusinessID,
+        ShiftID: shift.ShiftID,
+        StartTime: shift.StartTime,
+        EndTime: shift.EndTime,
+        RoleName: shift.role[0].RoleName,
+        ProficiencyLevel: shift.employee.role[0].employee_roles.ProficiencyLevel,
+        FirstName: shift.employee.FirstName,
+        LastName: shift.employee.LastName,
+        Phone: shift.employee.Phone
+    };
+    return parsedShift;
+  },
+
+  parseShifts: function(shifts){
+    let parsedShifts =[];
+    shifts.forEach(shift => {
+      parsedShifts.push(this.parseShift(shift));
+    })
+    return parsedShifts;
   }
 
 }
