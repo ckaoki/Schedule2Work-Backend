@@ -7,8 +7,7 @@ var fs = require("fs");
 var path = require("path");
 var Sequelize = require("sequelize");
 var basename = path.basename(module.filename);
-var env = process.env.NODE_ENV || "development"; //TODO: change 'development' to 'heroku' when seeding JAWdb. 
-                                            //TODO: Add heroku parameters in config.json. REMEMBER to delete before pushing to github.
+var env = process.env.NODE_ENV || "development"; 
 var config = require(__dirname + "/../config/config.json")[env];
 var db = {};
 
