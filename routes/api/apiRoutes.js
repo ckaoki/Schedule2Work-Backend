@@ -7,6 +7,7 @@ const csv = require("csv-string");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+
 // Login route
 router.route("/login/").post( function (req, res) {
   console.log(req.body.email);
@@ -18,32 +19,9 @@ router.route("/login/").post( function (req, res) {
   .catch(function(err){
     console.log(err);
     res.status(400).send(err);
-  });
-
-  // db.employee.findOne({
-  //   where: {Email:req.body.email}
-  //   }
-  // ).then(function (employee) {
-  //   if (!employee) {
-  //     //return res.redirect('https://www.google.com/');
-  //     console.log('found Employee');
-  //     return res.send('Employee not found!');
-  //   } 
-  //   else {
-  //     bcrypt.compare(req.body.password, employee.Password, function (err, result) {
-  //       if (result === true) {
-  //         //return res.redirect('/home');
-  //         console.log('Employee logged in!');
-  //         return res.send('Employee logged in!');
-  //       }
-  //       else {
-  //         console.log('Incorrect password');
-  //         return res.send('Incorrect password');
-  //       }
-  //     });
-  //   }
-  // });
+  });  
 });
+
 
 // Get employee by id
 router.route("/employee/:id").get( function (req, res) {
@@ -66,6 +44,7 @@ router.route("/employee/:id").get( function (req, res) {
       return res.json(parsedEmployee);
     })
 });
+
 
 // Get all employees
 router.route("/employees").get( function (req, res) {
@@ -178,6 +157,7 @@ router.route("/newEmployee").post( function (req, res) {
   });
 });  
 
+
 // Delete employee
 router.route("/deleteemployee/:id").delete( function (req, res) {
   db.employee.findByPk(req.params.id)
@@ -217,7 +197,6 @@ router.route("/deleteemployee/:id").delete( function (req, res) {
 });
 
 
-
 // Authenticate user
 const authenticateUser = function(email, password){
   return new Promise(function(resolve, reject){
@@ -246,6 +225,8 @@ const authenticateUser = function(email, password){
   });
 };
 
+
+// Add a new shift
 router.route("/addshift").post( function (req, res) {
   db.shift.create({
     Date: req.body.date,
@@ -268,56 +249,59 @@ router.route("/addshift").post( function (req, res) {
 
 });
 
-router.route("/today").get(function(req, res){
-  let date = new Date();
-  date.setDate(date.getDate() + 1);
-  let today =  date.getFullYear() +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+  String(date.getDate()).padStart(2, '0');
-  console.log(today);
-  res.send(today);
-})
 
-
-// Get all shifts for current week
-router.route("/thisweeksshifts").get( function (req, res) {
+// Get schedule containing all shifts for next 7 days
+router.route("/schedule").get( function (req, res) {
   // Get current week start date.
-  console.log("this week")
-  let date = new Date();
-  date.setDate(date.getDate() + 1); //TODO: remove +1
-  let today =  date.getFullYear() +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+  String(date.getDate()).padStart(2, '0');
+  let daysToReturn = 7;
+  let shiftsWeek =[];
+  
   // Get all shifts for first day and create object and push into array.
-  // Loop through all 7 days in week.
+  // Loop through next 7 days in week.
   // return array of 7 days of shifts.
-  db.shift.findAll(
-    {include: [{
-      model: db.role,
-      as: 'role',
-      attributes: [ 'RoleName'],
-      through: {
-        model: db.shift_roles,        
+  let date = new Date();
+  let endDate = new Date();
+  let today;
+  date.setDate(date.getDate());
+  endDate.setDate(date.getDate() + daysToReturn);
+
+  for (let i=0; i<=daysToReturn; i++){
+    today =  date.getFullYear() +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+  String(date.getDate()).padStart(2, '0');
+    // Find all shifts for specified date
+    db.shift.findAll({
+      where: {Date:today},    
+      include: [{
+        model: db.role,
+        as: 'role',
+        attributes: [ 'RoleName'],
+        through: {
+          model: db.shift_roles,        
+        }
       },
-    },
-      { 
+      {
         model: db.employee,
         attributes: ['FirstName', 'LastName', 'Phone'],
-         // This is not how we want to get role proficiency level.
-         // Just doing it this way because the data in our tables were seeded incorrectly
-         // and the employees may be assign shifts that require roles they are not assigned.
         include:[{
-          model: db.role,
-          as: 'role',
-          attributes: ['RoleID', 'RoleName'],
-          through:{model: db.employee_roles,  attributes:['ProficiencyLevel']},
-         
+            model: db.role,
+            as: 'role',
+            attributes: ['RoleID', 'RoleName'],
+            through:{model: db.employee_roles,  attributes:['ProficiencyLevel']},  
         }]
-      },    
-    ]} 
-  ).then(function (weekShifts) {
-      // return res.json(weekshifts);
-      let parsedShifts = helperFuncs.parseShifts(weekShifts);
-      return res.json(parsedShifts);
+      }] 
     })
+    .then(function (shiftsDay) {
+        let parsedShifts = helperFuncs.parseShifts(shiftsDay);
+       shiftsWeek.push(parsedShifts);
+       if(i === daysToReturn){
+         return res.json(shiftsWeek);
+       }
+    });
+
+    date.setDate(date.getDate() +1); // Increment date
+  }
 });
 
+module.exports = router;
 
 // *************************************************************************************************************
 // // TODO: Temporary routes for testing front end while building front end
@@ -343,12 +327,9 @@ router.route("/thisweeksshifts").get( function (req, res) {
 // });
 
 // //Faker route
-// router.route("/schedule").get( function (req, res) {
- 
+// router.route("/schedule").get( function (req, res) { 
 //   res.json(apiFakerRoute.schedule);
-
 // });
-
 
 // // TODO: delete this function if not needed
 // // Search for employee by role
@@ -395,5 +376,4 @@ router.route("/thisweeksshifts").get( function (req, res) {
 //   })
 // });
 
-module.exports = router;
 
