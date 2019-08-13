@@ -197,6 +197,55 @@ router.route("/deleteemployee/:id").delete( function (req, res) {
 });
 
 
+// Get shift by id
+router.route("/shift/:id").get( function (req, res) {
+  let shiftID = req.params.id.trim();
+  db.shift.findByPk(shiftID,
+    {include: [{
+      model: db.employee,
+      as: 'employee',
+      attributes: ['FirstName', 'LastName'],
+      },
+      {
+        model: db.role,
+        as: 'role',
+        attributes: [ 'RoleName'],
+        through: {
+          model: db.shift_roles,        
+        }
+      }]
+    },
+  ).then(function (shift) {
+       return res.json(shift);
+    })
+});
+
+// Get all shifts
+router.route("/shifts").get( function (req, res) {
+  db.shift.findAll(
+    {include: [{
+      model: db.employee,
+      as: 'employee',
+      attributes: ['FirstName', 'LastName']
+     
+    },
+    {
+      model: db.role,
+      as: 'role',
+      attributes: [ 'RoleName'],
+      through: {
+        model: db.shift_roles,        
+      }
+    }]}
+  ).then(function (shifts) {
+      return res.json(shifts);
+  })
+  .catch(function(err){ 
+    console.log(err);
+    res.status(400).send(err);
+  });  
+});
+
 // Authenticate user
 const authenticateUser = function(email, password){
   return new Promise(function(resolve, reject){
